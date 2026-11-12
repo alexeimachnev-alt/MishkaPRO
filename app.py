@@ -25,7 +25,6 @@ NL = chr(10)
 
 def create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total):
     buffer = io.BytesIO()
-    # Уменьшим поля для более современного вида
     doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=40, leftMargin=40, topMargin=40, bottomMargin=40)
 
     try:
@@ -46,8 +45,6 @@ def create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total):
             font_bold = 'Helvetica-Bold'
 
     styles = getSampleStyleSheet()
-    
-    # Цветовая палитра
     TEXT_DARK = colors.HexColor("#0f172a")
     TEXT_MUTED = colors.HexColor("#64748b")
     ACCENT = colors.HexColor("#0284c7")
@@ -55,42 +52,26 @@ def create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total):
     BG_LIGHT = colors.HexColor("#f8fafc")
     BORDER_COLOR = colors.HexColor("#e2e8f0")
 
-    # Стили текста
     style_h1 = ParagraphStyle('H1', fontName=font_bold, fontSize=20, textColor=ACCENT, spaceAfter=5)
     style_date = ParagraphStyle('Date', fontName=font_name, fontSize=10, textColor=TEXT_MUTED, spaceAfter=20)
-    
     style_label = ParagraphStyle('Label', fontName=font_bold, fontSize=10, textColor=TEXT_MUTED)
     style_value = ParagraphStyle('Value', fontName=font_name, fontSize=11, textColor=TEXT_DARK, spaceAfter=10)
-    
     style_guarantee = ParagraphStyle('Guarantee', fontName=font_name, fontSize=10, textColor=TEXT_DARK, leading=14)
 
     elements = []
     
-    # 1. ШАПКА ДОКУМЕНТА (Двойная колонка)
     current_date = datetime.datetime.now().strftime("%d.%m.%Y")
-    
-    left_header = [
-        Paragraph("<b>КОММЕРЧЕСКОЕ<br/>ПРЕДЛОЖЕНИЕ</b>", style_h1),
-        Paragraph(f"От {current_date}", style_date)
-    ]
-    
+    left_header = [Paragraph("<b>КОММЕРЧЕСКОЕ<br/>ПРЕДЛОЖЕНИЕ</b>", style_h1), Paragraph(f"От {current_date}", style_date)]
     right_header = [
-        Paragraph("ДИЛЕР / ПОСТАВЩИК:", style_label),
-        Paragraph(dealer_company, style_value),
-        Paragraph("ДЛЯ КЛИЕНТА / ОБЪЕКТА:", style_label),
-        Paragraph(client_name, style_value)
+        Paragraph("ДИЛЕР / ПОСТАВЩИК:", style_label), Paragraph(dealer_company, style_value),
+        Paragraph("ДЛЯ КЛИЕНТА / ОБЪЕКТА:", style_label), Paragraph(client_name, style_value)
     ]
     
     header_table = Table([[left_header, right_header]], colWidths=[270, 240])
-    header_table.setStyle(TableStyle([
-        ('VALIGN', (0,0), (-1,-1), 'TOP'),
-        ('ALIGN', (1,0), (1,0), 'RIGHT'),
-    ]))
-    
+    header_table.setStyle(TableStyle([('VALIGN', (0,0), (-1,-1), 'TOP'), ('ALIGN', (1,0), (1,0), 'RIGHT')]))
     elements.append(header_table)
     elements.append(Spacer(1, 20))
 
-    # 2. ТАБЛИЦА ТОВАРОВ И УСЛУГ
     table_data = [["№", "Наименование оборудования и работ", "Кол-во", "Цена, ₽", "Сумма, ₽"]]
     idx = 1
     for i in items:
@@ -101,39 +82,19 @@ def create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total):
 
         client_price = base_price if cat == "works" else round(base_price * (1 + markup_pct / 100.0))
         row_sum = client_price * qty
-        
-        # Добавляем маркер [РАБОТА] для ясности
         prefix = "🚜 " if cat == "works" else ""
 
-        table_data.append([
-            str(idx),
-            prefix + name,
-            f"{qty} шт.",
-            f"{int(client_price):,}".replace(",", " "),
-            f"{int(row_sum):,}".replace(",", " ")
-        ])
+        table_data.append([str(idx), prefix + name, f"{qty} шт.", f"{int(client_price):,}".replace(",", " "), f"{int(row_sum):,}".replace(",", " ")])
         idx += 1
 
-    t_widths = [30, 260, 50, 80, 90]
-    t = Table(table_data, colWidths=t_widths)
-    
-    # Базовый стиль таблицы
+    t = Table(table_data, colWidths=[30, 260, 50, 80, 90])
     t_style = TableStyle([
-        # Шапка
-        ('BACKGROUND', (0,0), (-1,0), ACCENT),
-        ('TEXTCOLOR', (0,0), (-1,0), colors.white),
-        ('FONTNAME', (0,0), (-1,0), font_bold),
-        ('FONTSIZE', (0,0), (-1,0), 10),
-        ('BOTTOMPADDING', (0,0), (-1,0), 10),
-        ('TOPPADDING', (0,0), (-1,0), 10),
-        
-        # Выравнивание
-        ('ALIGN', (0,0), (-1,-1), 'CENTER'),
-        ('ALIGN', (1,0), (1,-1), 'LEFT'), # Наименование по левому краю
-        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('BACKGROUND', (0,0), (-1,0), ACCENT), ('TEXTCOLOR', (0,0), (-1,0), colors.white),
+        ('FONTNAME', (0,0), (-1,0), font_bold), ('FONTSIZE', (0,0), (-1,0), 10),
+        ('BOTTOMPADDING', (0,0), (-1,0), 10), ('TOPPADDING', (0,0), (-1,0), 10),
+        ('ALIGN', (0,0), (-1,-1), 'CENTER'), ('ALIGN', (1,0), (1,-1), 'LEFT'), ('VALIGN', (0,0), (-1,-1), 'MIDDLE')
     ])
     
-    # Зебра и стили строк
     for row in range(1, len(table_data)):
         bg = colors.white if row % 2 == 1 else BG_LIGHT
         t_style.add('BACKGROUND', (0,row), (-1,row), bg)
@@ -148,26 +109,18 @@ def create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total):
     elements.append(t)
     elements.append(Spacer(1, 20))
 
-    # 3. БЛОК ИТОГО
-    total_data = [
-        ["ИТОГО ПОД КЛЮЧ:", f"{int(client_total):,} ₽".replace(",", " ")]
-    ]
+    total_data = [["ИТОГО ПОД КЛЮЧ:", f"{int(client_total):,} ₽".replace(",", " ")]]
     total_table = Table(total_data, colWidths=[390, 120])
     total_table.setStyle(TableStyle([
-        ('FONTNAME', (0,0), (0,0), font_name),
-        ('FONTNAME', (1,0), (1,0), font_bold),
-        ('FONTSIZE', (0,0), (-1,-1), 14),
-        ('TEXTCOLOR', (0,0), (-1,-1), TEXT_DARK),
-        ('ALIGN', (0,0), (0,0), 'RIGHT'),
-        ('ALIGN', (1,0), (1,0), 'CENTER'),
-        ('TOPPADDING', (0,0), (-1,-1), 12),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 12),
+        ('FONTNAME', (0,0), (0,0), font_name), ('FONTNAME', (1,0), (1,0), font_bold),
+        ('FONTSIZE', (0,0), (-1,-1), 14), ('TEXTCOLOR', (0,0), (-1,-1), TEXT_DARK),
+        ('ALIGN', (0,0), (0,0), 'RIGHT'), ('ALIGN', (1,0), (1,0), 'CENTER'),
+        ('TOPPADDING', (0,0), (-1,-1), 12), ('BOTTOMPADDING', (0,0), (-1,-1), 12),
         ('LINEABOVE', (0,0), (-1,-1), 2.5, ACCENT_LIGHT)
     ]))
     
     elements.append(KeepTogether([total_table, Spacer(1, 30)]))
 
-    # 4. БЛОК ГАРАНТИИ
     guarantee_block = [
         Paragraph("<b>ГАРАНТИЙНЫЕ ОБЯЗАТЕЛЬСТВА</b>", ParagraphStyle('G_Title', fontName=font_bold, fontSize=11, textColor=ACCENT, spaceAfter=6)),
         Paragraph("Настоящее коммерческое предложение включает использование оригинального оборудования. "
@@ -177,16 +130,11 @@ def create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total):
     
     g_table = Table([[guarantee_block]], colWidths=[510])
     g_table.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), BG_LIGHT),
-        ('BOX', (0,0), (-1,-1), 1, BORDER_COLOR),
-        ('TOPPADDING', (0,0), (-1,-1), 12),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 12),
-        ('LEFTPADDING', (0,0), (-1,-1), 15),
-        ('RIGHTPADDING', (0,0), (-1,-1), 15),
+        ('BACKGROUND', (0,0), (-1,-1), BG_LIGHT), ('BOX', (0,0), (-1,-1), 1, BORDER_COLOR),
+        ('TOPPADDING', (0,0), (-1,-1), 12), ('BOTTOMPADDING', (0,0), (-1,-1), 12),
+        ('LEFTPADDING', (0,0), (-1,-1), 15), ('RIGHTPADDING', (0,0), (-1,-1), 15),
     ]))
-    
     elements.append(g_table)
-
     doc.build(elements)
     buffer.seek(0)
     return buffer
