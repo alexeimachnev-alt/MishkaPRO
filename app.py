@@ -13,7 +13,6 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
-# --- КОНФИГУРАЦИЯ ---
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "ВСТАВЬ_СЮДА_ТОКЕН_НОВОГО_БОТА")
 APP_URL = os.environ.get("APP_URL", "https://твой-новый-сервис.onrender.com").rstrip("/")
 ADMIN_IDS = [551209811, 447208738, 840231919]
@@ -44,14 +43,13 @@ def create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total):
                 pass
             font_name = 'Calibri'
         except Exception:
-            font_name = 'Helvetica' # Резервный
+            font_name = 'Helvetica'
 
     styles = getSampleStyleSheet()
     style_title = ParagraphStyle('Title', fontName=font_name, fontSize=16, alignment=1, spaceAfter=20)
     style_norm = ParagraphStyle('Norm', fontName=font_name, fontSize=12, spaceAfter=8)
 
     elements = []
-    
     elements.append(Paragraph("<b>КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ</b>", style_title))
     elements.append(Paragraph(f"<b>Поставщик:</b> {dealer_company}", style_norm))
     elements.append(Paragraph(f"<b>Заказчик / Объект:</b> {client_name}", style_norm))
@@ -69,9 +67,7 @@ def create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total):
         row_sum = client_price * qty
 
         table_data.append([
-            str(idx),
-            name,
-            f"{qty} шт.",
+            str(idx), name, f"{qty} шт.",
             f"{int(client_price):,}".replace(",", " "),
             f"{int(row_sum):,}".replace(",", " ")
         ])
@@ -101,12 +97,10 @@ def create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total):
     return buffer
 
 @app.route("/")
-def index():
-    return render_template("index.html")
+def index(): return render_template("index.html")
 
 @app.route("/health")
-def health():
-    return "OK", 200
+def health(): return "OK", 200
 
 @app.route("/api/test_order", methods=["POST"])
 def handle_test_order():
@@ -128,7 +122,6 @@ def handle_test_order():
         base_total = goods_base + works_base
         client_total = base_total + markup_rub
 
-        # 1. ЧИСТОЕ КП ДЛЯ КЛИЕНТА
         kp_lines = [
             "🐻 <b>ПК «МИШКА» — КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ</b>",
             f"📍 Заказчик / Объект: <b>{client_name}</b>",
@@ -159,20 +152,13 @@ def handle_test_order():
 
         if user_id:
             bot.send_message(user_id, NL.join(kp_lines), parse_mode="HTML")
-            
             try:
                 pdf_buffer = create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total)
                 file_name = f"KP_{client_name.replace(' ', '_')}.pdf" if client_name != "Не указан" else "KP_MISHKA.pdf"
-                
-                bot.send_document(
-                    user_id,
-                    document=(file_name, pdf_buffer.getvalue()),
-                    caption="📄 Готовый бланк КП для вашего заказчика."
-                )
+                bot.send_document(user_id, document=(file_name, pdf_buffer.getvalue()), caption="📄 Готовый бланк КП для вашего заказчика.")
             except Exception as e:
                 print(f"Ошибка при генерации PDF: {e}")
 
-        # 2. ВНУТРЕННЯЯ ЗАЯВКА
         admin_lines = [
             "🔥 <b>НОВАЯ ЗАЯВКА (МИШКА: КОНФИГУРАТОР + КП)</b>",
             f"👷 Отправитель: {first_name} (@{username})",
@@ -194,11 +180,8 @@ def handle_test_order():
         ])
 
         for admin_id in ADMIN_IDS:
-            try:
-                bot.send_message(admin_id, NL.join(admin_lines), parse_mode="HTML")
-            except Exception:
-                pass
-
+            try: bot.send_message(admin_id, NL.join(admin_lines), parse_mode="HTML")
+            except: pass
         return jsonify({"ok": True})
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
@@ -224,8 +207,7 @@ def run_bot():
         bot.remove_webhook()
         time.sleep(1)
         bot.infinity_polling(timeout=20, long_polling_timeout=10)
-    except Exception as e:
-        pass
+    except: pass
 
 def keep_alive():
     while True:
