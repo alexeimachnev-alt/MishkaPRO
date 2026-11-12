@@ -1028,8 +1028,8 @@
 
         const workSelected = ITEMS.filter(i => i.cat === 'works' && cart[i.id]);
         if (workSelected.length > 0) {
-            lines.push(`
-🚜 МОНТАЖНЫЕ РАБОТЫ ПОД КЛЮЧ:`);
+            lines.push('');
+            lines.push('🚜 МОНТАЖНЫЕ РАБОТЫ ПОД КЛЮЧ:');
             workSelected.forEach(i => {
                 const q = cart[i.id];
                 const sum = i.price * q;
@@ -1041,8 +1041,7 @@
         lines.push(`──────────────────────────`);
         lines.push(`✅ ИТОГО ПОД КЛЮЧ: ${totalClient.toLocaleString('ru-RU')} ₽`);
         lines.push(`🛡 Гарантия на корпус кессона МИШКА и герметичность!`);
-        return lines.join('
-');
+        return lines.join(String.fromCharCode(10));
     }
 
     function openKpPreview() {
