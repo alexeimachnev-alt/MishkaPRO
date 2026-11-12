@@ -76,7 +76,7 @@ def create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total):
     idx = 1
     for i in items:
         cat = i.get("cat")
-        name = i.get("name")
+        name = i.get("name") # ВНИМАНИЕ: Сюда уже будет приходить русское название из Web App
         qty = int(i.get("qty", 1))
         base_price = float(i.get("base_price", 0))
 
@@ -165,6 +165,7 @@ def handle_test_order():
         base_total = goods_base + works_base
         client_total = base_total + markup_rub
 
+        # Текст КП всегда на русском
         kp_lines = [
             "🐻 <b>ПК «МИШКА» — КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ</b>",
             f"📍 Заказчик / Объект: <b>{client_name}</b>",
@@ -190,7 +191,7 @@ def handle_test_order():
             f"✅ <b>ИТОГО ПОД КЛЮЧ: {client_total:,} ₽</b>".replace(",", " "),
             "🛡 <i>Гарантия на корпус кессона МИШКА и герметичность!</i>",
             "",
-            "<i>👆 Готовое КП для вашего заказчика (внутренние цены склада скрыты).</i>"
+            "<i>👆 Готовое КП для вашего заказчика.</i>"
         ])
 
         if user_id:
@@ -202,6 +203,7 @@ def handle_test_order():
             except Exception as e:
                 print(f"Ошибка при генерации PDF: {e}")
 
+        # Админская заявка тоже всегда на русском
         admin_lines = [
             "🔥 <b>НОВАЯ ЗАЯВКА (МИШКА: КОНФИГУРАТОР + КП)</b>",
             f"👷 Отправитель: {first_name} (@{username})",
