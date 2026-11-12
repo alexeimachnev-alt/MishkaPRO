@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, send_file
 import pdfkit
 import os
@@ -61,8 +60,6 @@ def generate_pdf():
         f.write(pdf)
         
     # === ИНТЕГРАЦИЯ С ТЕЛЕГРАМ-БОТОМ (Пример) ===
-    # Если вы используете Aiogram или telebot:
-    # 
     # text_message = f"✅ КП сформировано!\nКессон: {caisson['name']}\nЗакупочная цена: {base_price} руб.\nНаценка: {markup} руб.\nИтого для клиента: {final_price} руб."
     # bot.send_message(chat_id, text_message)
     # bot.send_document(chat_id, open(pdf_path, 'rb'))
