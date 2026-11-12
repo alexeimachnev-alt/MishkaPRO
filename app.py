@@ -3,6 +3,7 @@ import time
 import threading
 import requests
 import io
+import datetime
 from flask import Flask, request, render_template, jsonify
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
@@ -10,8 +11,9 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, KeepTogether
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import mm
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "ВСТАВЬ_СЮДА_ТОКЕН_НОВОГО_БОТА")
 APP_URL = os.environ.get("APP_URL", "https://твой-новый-сервис.onrender.com").rstrip("/")
@@ -23,39 +25,73 @@ NL = chr(10)
 
 def create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total):
     buffer = io.BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=30, leftMargin=30, topMargin=30, bottomMargin=30)
+    # Уменьшим поля для более современного вида
+    doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=40, leftMargin=40, topMargin=40, bottomMargin=40)
 
     try:
         pdfmetrics.registerFont(TTFont('Roboto', 'Roboto-Regular.ttf'))
-        try:
-            pdfmetrics.registerFont(TTFont('Roboto-Bold', 'Roboto-Bold.ttf'))
-            pdfmetrics.registerFontFamily('Roboto', normal='Roboto', bold='Roboto-Bold')
-        except:
-            pass
+        pdfmetrics.registerFont(TTFont('Roboto-Bold', 'Roboto-Bold.ttf'))
+        pdfmetrics.registerFontFamily('Roboto', normal='Roboto', bold='Roboto-Bold')
         font_name = 'Roboto'
+        font_bold = 'Roboto-Bold'
     except Exception:
         try:
             pdfmetrics.registerFont(TTFont('Calibri', 'calibri.ttf'))
-            try:
-                pdfmetrics.registerFont(TTFont('Calibri-Bold', 'calibrib.ttf'))
-                pdfmetrics.registerFontFamily('Calibri', normal='Calibri', bold='Calibri-Bold')
-            except:
-                pass
+            pdfmetrics.registerFont(TTFont('Calibri-Bold', 'calibrib.ttf'))
+            pdfmetrics.registerFontFamily('Calibri', normal='Calibri', bold='Calibri-Bold')
             font_name = 'Calibri'
+            font_bold = 'Calibri-Bold'
         except Exception:
             font_name = 'Helvetica'
+            font_bold = 'Helvetica-Bold'
 
     styles = getSampleStyleSheet()
-    style_title = ParagraphStyle('Title', fontName=font_name, fontSize=16, alignment=1, spaceAfter=20)
-    style_norm = ParagraphStyle('Norm', fontName=font_name, fontSize=12, spaceAfter=8)
+    
+    # Цветовая палитра
+    TEXT_DARK = colors.HexColor("#0f172a")
+    TEXT_MUTED = colors.HexColor("#64748b")
+    ACCENT = colors.HexColor("#0284c7")
+    ACCENT_LIGHT = colors.HexColor("#38bdf8")
+    BG_LIGHT = colors.HexColor("#f8fafc")
+    BORDER_COLOR = colors.HexColor("#e2e8f0")
+
+    # Стили текста
+    style_h1 = ParagraphStyle('H1', fontName=font_bold, fontSize=20, textColor=ACCENT, spaceAfter=5)
+    style_date = ParagraphStyle('Date', fontName=font_name, fontSize=10, textColor=TEXT_MUTED, spaceAfter=20)
+    
+    style_label = ParagraphStyle('Label', fontName=font_bold, fontSize=10, textColor=TEXT_MUTED)
+    style_value = ParagraphStyle('Value', fontName=font_name, fontSize=11, textColor=TEXT_DARK, spaceAfter=10)
+    
+    style_guarantee = ParagraphStyle('Guarantee', fontName=font_name, fontSize=10, textColor=TEXT_DARK, leading=14)
 
     elements = []
-    elements.append(Paragraph("<b>КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ</b>", style_title))
-    elements.append(Paragraph(f"<b>Поставщик:</b> {dealer_company}", style_norm))
-    elements.append(Paragraph(f"<b>Заказчик / Объект:</b> {client_name}", style_norm))
-    elements.append(Spacer(1, 15))
+    
+    # 1. ШАПКА ДОКУМЕНТА (Двойная колонка)
+    current_date = datetime.datetime.now().strftime("%d.%m.%Y")
+    
+    left_header = [
+        Paragraph("<b>КОММЕРЧЕСКОЕ<br/>ПРЕДЛОЖЕНИЕ</b>", style_h1),
+        Paragraph(f"От {current_date}", style_date)
+    ]
+    
+    right_header = [
+        Paragraph("ДИЛЕР / ПОСТАВЩИК:", style_label),
+        Paragraph(dealer_company, style_value),
+        Paragraph("ДЛЯ КЛИЕНТА / ОБЪЕКТА:", style_label),
+        Paragraph(client_name, style_value)
+    ]
+    
+    header_table = Table([[left_header, right_header]], colWidths=[270, 240])
+    header_table.setStyle(TableStyle([
+        ('VALIGN', (0,0), (-1,-1), 'TOP'),
+        ('ALIGN', (1,0), (1,0), 'RIGHT'),
+    ]))
+    
+    elements.append(header_table)
+    elements.append(Spacer(1, 20))
 
-    table_data = [["№", "Наименование", "Кол-во", "Цена, ₽", "Сумма, ₽"]]
+    # 2. ТАБЛИЦА ТОВАРОВ И УСЛУГ
+    table_data = [["№", "Наименование оборудования и работ", "Кол-во", "Цена, ₽", "Сумма, ₽"]]
     idx = 1
     for i in items:
         cat = i.get("cat")
@@ -65,32 +101,91 @@ def create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total):
 
         client_price = base_price if cat == "works" else round(base_price * (1 + markup_pct / 100.0))
         row_sum = client_price * qty
+        
+        # Добавляем маркер [РАБОТА] для ясности
+        prefix = "🚜 " if cat == "works" else ""
 
         table_data.append([
-            str(idx), name, f"{qty} шт.",
+            str(idx),
+            prefix + name,
+            f"{qty} шт.",
             f"{int(client_price):,}".replace(",", " "),
             f"{int(row_sum):,}".replace(",", " ")
         ])
         idx += 1
 
-    t = Table(table_data, colWidths=[30, 250, 50, 80, 90])
-    t.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#38bdf8")),
+    t_widths = [30, 260, 50, 80, 90]
+    t = Table(table_data, colWidths=t_widths)
+    
+    # Базовый стиль таблицы
+    t_style = TableStyle([
+        # Шапка
+        ('BACKGROUND', (0,0), (-1,0), ACCENT),
         ('TEXTCOLOR', (0,0), (-1,0), colors.white),
+        ('FONTNAME', (0,0), (-1,0), font_bold),
+        ('FONTSIZE', (0,0), (-1,0), 10),
+        ('BOTTOMPADDING', (0,0), (-1,0), 10),
+        ('TOPPADDING', (0,0), (-1,0), 10),
+        
+        # Выравнивание
         ('ALIGN', (0,0), (-1,-1), 'CENTER'),
-        ('ALIGN', (1,1), (1,-1), 'LEFT'),
-        ('FONTNAME', (0,0), (-1,-1), font_name),
-        ('FONTSIZE', (0,0), (-1,-1), 10),
-        ('BOTTOMPADDING', (0,0), (-1,0), 8),
-        ('TOPPADDING', (0,0), (-1,0), 8),
-        ('GRID', (0,0), (-1,-1), 1, colors.black)
-    ]))
+        ('ALIGN', (1,0), (1,-1), 'LEFT'), # Наименование по левому краю
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+    ])
+    
+    # Зебра и стили строк
+    for row in range(1, len(table_data)):
+        bg = colors.white if row % 2 == 1 else BG_LIGHT
+        t_style.add('BACKGROUND', (0,row), (-1,row), bg)
+        t_style.add('FONTNAME', (0,row), (-1,row), font_name)
+        t_style.add('FONTSIZE', (0,row), (-1,row), 10)
+        t_style.add('TEXTCOLOR', (0,row), (-1,row), TEXT_DARK)
+        t_style.add('BOTTOMPADDING', (0,row), (-1,row), 10)
+        t_style.add('TOPPADDING', (0,row), (-1,row), 10)
+        t_style.add('LINEBELOW', (0,row), (-1,row), 0.5, BORDER_COLOR)
 
+    t.setStyle(t_style)
     elements.append(t)
     elements.append(Spacer(1, 20))
 
-    style_total = ParagraphStyle('Total', fontName=font_name, fontSize=14, alignment=2, spaceAfter=20)
-    elements.append(Paragraph(f"<b>ИТОГО ПОД КЛЮЧ: {int(client_total):,} ₽</b>".replace(",", " "), style_total))
+    # 3. БЛОК ИТОГО
+    total_data = [
+        ["ИТОГО ПОД КЛЮЧ:", f"{int(client_total):,} ₽".replace(",", " ")]
+    ]
+    total_table = Table(total_data, colWidths=[390, 120])
+    total_table.setStyle(TableStyle([
+        ('FONTNAME', (0,0), (0,0), font_name),
+        ('FONTNAME', (1,0), (1,0), font_bold),
+        ('FONTSIZE', (0,0), (-1,-1), 14),
+        ('TEXTCOLOR', (0,0), (-1,-1), TEXT_DARK),
+        ('ALIGN', (0,0), (0,0), 'RIGHT'),
+        ('ALIGN', (1,0), (1,0), 'CENTER'),
+        ('TOPPADDING', (0,0), (-1,-1), 12),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 12),
+        ('LINEABOVE', (0,0), (-1,-1), 2.5, ACCENT_LIGHT)
+    ]))
+    
+    elements.append(KeepTogether([total_table, Spacer(1, 30)]))
+
+    # 4. БЛОК ГАРАНТИИ
+    guarantee_block = [
+        Paragraph("<b>ГАРАНТИЙНЫЕ ОБЯЗАТЕЛЬСТВА</b>", ParagraphStyle('G_Title', fontName=font_bold, fontSize=11, textColor=ACCENT, spaceAfter=6)),
+        Paragraph("Настоящее коммерческое предложение включает использование оригинального оборудования. "
+                  "Гарантия на 100% герметичность и целостность полипропиленового корпуса кессона <b>МИШКА</b> "
+                  "предоставляется напрямую от завода-изготовителя.", style_guarantee)
+    ]
+    
+    g_table = Table([[guarantee_block]], colWidths=[510])
+    g_table.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), BG_LIGHT),
+        ('BOX', (0,0), (-1,-1), 1, BORDER_COLOR),
+        ('TOPPADDING', (0,0), (-1,-1), 12),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 12),
+        ('LEFTPADDING', (0,0), (-1,-1), 15),
+        ('RIGHTPADDING', (0,0), (-1,-1), 15),
+    ]))
+    
+    elements.append(g_table)
 
     doc.build(elements)
     buffer.seek(0)
@@ -155,7 +250,7 @@ def handle_test_order():
             try:
                 pdf_buffer = create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total)
                 file_name = f"KP_{client_name.replace(' ', '_')}.pdf" if client_name != "Не указан" else "KP_MISHKA.pdf"
-                bot.send_document(user_id, document=(file_name, pdf_buffer.getvalue()), caption="📄 Готовый бланк КП для вашего заказчика.")
+                bot.send_document(user_id, document=(file_name, pdf_buffer.getvalue()), caption="📄 Стилизованный бланк КП для заказчика.")
             except Exception as e:
                 print(f"Ошибка при генерации PDF: {e}")
 
