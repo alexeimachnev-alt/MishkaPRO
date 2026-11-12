@@ -43,7 +43,6 @@ def generate_pdf():
     rendered = render_template('pdf_template.html', **data)
     
     # Настройки для pdfkit 
-    # ВАЖНО: на сервере должен быть установлен wkhtmltopdf
     options = {
         'page-size': 'A4',
         'encoding': "UTF-8",
@@ -59,13 +58,8 @@ def generate_pdf():
     with open(pdf_path, 'wb') as f:
         f.write(pdf)
         
-    # === ИНТЕГРАЦИЯ С ТЕЛЕГРАМ-БОТОМ (Пример) ===
-    # text_message = f"✅ КП сформировано!\nКессон: {caisson['name']}\nЗакупочная цена: {base_price} руб.\nНаценка: {markup} руб.\nИтого для клиента: {final_price} руб."
-    # bot.send_message(chat_id, text_message)
-    # bot.send_document(chat_id, open(pdf_path, 'rb'))
-    # ===========================================
-        
     return send_file(pdf_path, as_attachment=True, download_name='Смета_для_клиента.pdf')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
