@@ -17,17 +17,27 @@
         .mode-switch { display: flex; background: #09101d; border: 1px solid var(--border-subtle); border-radius: 10px; padding: 3px; }
         .mode-btn { border: none; background: transparent; color: var(--text-secondary); font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 7px; cursor: pointer; transition: all 0.25s ease; }
         .mode-btn.active { background: linear-gradient(135deg, #0284c7, #2563eb); color: #fff; box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4); }
+        
         .blueprint-card { background: linear-gradient(180deg, rgba(14, 30, 56, 0.85) 0%, rgba(9, 16, 29, 0.95) 100%); border: 1px solid rgba(56, 189, 248, 0.28); border-radius: 18px; padding: 12px; margin-bottom: 18px; position: relative; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45), inset 0 0 25px rgba(56, 189, 248, 0.06); }
         .blueprint-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .blueprint-title { font-size: 12px; font-weight: 700; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 0.7px; display: flex; align-items: center; gap: 6px; }
         .live-dot { width: 8px; height: 8px; background: var(--accent-emerald); border-radius: 50%; box-shadow: 0 0 8px var(--accent-emerald); animation: pulse 1.8s infinite; }
         @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.5; } }
-        .svg-container { width: 100%; height: 175px; border-radius: 12px; overflow: hidden; background: #071120; border: 1px solid rgba(255, 255, 255, 0.05); }
+        
+        /* ОБНОВЛЕННЫЙ SVG КОНТЕЙНЕР И АНИМАЦИИ */
+        .svg-container { width: 100%; height: 185px; border-radius: 12px; overflow: hidden; background: #050b14; border: 1px solid rgba(56, 189, 248, 0.15); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
+        .water-flow { stroke-dasharray: 8 6; animation: flow 1s linear infinite; }
+        .cable-flow { stroke-dasharray: 4 4; animation: flow-reverse 1.5s linear infinite; }
+        @keyframes flow { to { stroke-dashoffset: -14; } }
+        @keyframes flow-reverse { to { stroke-dashoffset: 8; } }
+
         .scheme-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
         .s-badge { font-size: 10px; padding: 4px 8px; border-radius: 6px; background: rgba(255, 255, 255, 0.04); color: var(--text-secondary); border: 1px solid rgba(255, 255, 255, 0.06); transition: all 0.25s; }
         .s-badge.active { background: rgba(16, 185, 129, 0.16); color: #34d399; border-color: rgba(16, 185, 129, 0.4); font-weight: 600; }
+        
         .sec-title { font-size: 15px; font-weight: 800; margin: 18px 0 8px; display: flex; align-items: center; justify-content: space-between; }
         .sec-sub { font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; }
+        
         .presets-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
         .presets-scroll::-webkit-scrollbar { display: none; }
         .preset-card { min-width: 225px; background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95)); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 14px; flex-shrink: 0; position: relative; cursor: pointer; transition: all 0.25s ease; }
@@ -40,10 +50,12 @@
         .preset-items { font-size: 11px; color: var(--text-secondary); line-height: 1.35; margin-bottom: 12px; min-height: 45px; }
         .preset-btn { width: 100%; padding: 8px; border-radius: 10px; border: none; background: rgba(56, 189, 248, 0.14); color: var(--accent-blue); font-weight: 700; font-size: 12px; cursor: pointer; }
         .preset-card.selected .preset-btn { background: var(--accent-blue); color: #060b14; }
+        
         .cat-tabs { display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto; scrollbar-width: none; }
         .cat-tabs::-webkit-scrollbar { display: none; }
         .cat-tab { padding: 8px 13px; border-radius: 11px; background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-secondary); font-size: 12px; font-weight: 700; white-space: nowrap; cursor: pointer; transition: 0.2s; }
         .cat-tab.active { background: rgba(56, 189, 248, 0.16); color: #fff; border-color: var(--accent-blue); }
+        
         .product-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 12px; margin-bottom: 9px; display: flex; justify-content: space-between; align-items: center; gap: 10px; transition: border-color 0.2s, transform 0.15s; }
         .product-card.in-cart { border-color: rgba(16, 185, 129, 0.5); background: linear-gradient(90deg, rgba(16, 185, 129, 0.08), var(--bg-card)); }
         .prod-info { flex: 1; }
@@ -56,6 +68,7 @@
         .qty-btn { width: 28px; height: 28px; border-radius: 7px; border: none; background: #1e293b; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; }
         .qty-btn.plus { background: linear-gradient(135deg, #0ea5e9, #2563eb); }
         .qty-num { min-width: 18px; text-align: center; font-size: 13px; font-weight: 800; }
+        
         .dealer-panel { background: linear-gradient(145deg, rgba(30, 27, 75, 0.65), rgba(15, 23, 42, 0.9)); border: 1px solid rgba(99, 102, 241, 0.4); border-radius: 16px; padding: 14px; margin-top: 18px; }
         .dealer-panel.hidden { display: none; }
         .dealer-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -64,12 +77,14 @@
         .form-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 14px; margin-top: 14px; }
         .inp { width: 100%; background: #09101d; border: 1px solid var(--border-subtle); color: #fff; padding: 11px 12px; border-radius: 10px; font-size: 13px; margin-top: 8px; outline: none; }
         .inp:focus { border-color: var(--accent-blue); }
+        
         .bottom-dock { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(9, 15, 28, 0.92); backdrop-filter: blur(18px); border-top: 1px solid rgba(56, 189, 248, 0.25); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; z-index: 50; box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5); }
         .dock-prices { line-height: 1.3; }
         .dock-sub { font-size: 11px; color: var(--text-secondary); }
         .dock-main { font-size: 18px; font-weight: 900; color: #fff; }
         .dock-main span { color: var(--accent-emerald); }
         .btn-submit { background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; padding: 13px 20px; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4); }
+        
         .overlay { display: none; position: fixed; inset: 0; background: rgba(3, 7, 18, 0.84); backdrop-filter: blur(8px); z-index: 100; align-items: center; justify-content: center; padding: 16px; }
         .modal-card { background: #111c2d; border: 1px solid rgba(245, 158, 11, 0.45); border-radius: 18px; padding: 18px; max-width: 390px; width: 100%; max-height: 88vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7); }
         .modal-card.kp-theme { border-color: rgba(56, 189, 248, 0.45); }
@@ -80,8 +95,6 @@
         .btn-blue { background: linear-gradient(135deg, #0ea5e9, #2563eb); color: #fff; }
         .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-subtle); }
         .kp-sheet { background: #09101d; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px; font-size: 12px; line-height: 1.5; margin: 10px 0; white-space: pre-wrap; }
-        .water-flow { stroke-dasharray: 6 4; animation: flow 1s linear infinite; }
-        @keyframes flow { to { stroke-dashoffset: -10; } }
     </style>
 </head>
 <body>
@@ -98,6 +111,7 @@
             <button class="mode-btn" id="btn-mode-dealer" onclick="setMode('dealer')">💼 Дилер</button>
         </div>
     </div>
+    
     <div class="blueprint-card">
         <div class="blueprint-head">
             <div class="blueprint-title">
@@ -105,88 +119,159 @@
             </div>
             <span style="font-size: 11px; color: var(--text-secondary);" id="scheme-status">Выберите узел</span>
         </div>
+        
+        <!-- КРАСИВАЯ АНИМИРОВАННАЯ SVG СХЕМА -->
         <div class="svg-container">
             <svg viewBox="0 0 400 175" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                <!-- Небо и грунт -->
-                <rect x="0" y="0" width="400" height="42" fill="#0c192c" />
-                <rect x="0" y="42" width="400" height="133" fill="#101824" />
-                <line x1="0" y1="42" x2="400" y2="42" stroke="#10b981" stroke-width="2" stroke-opacity="0.6" />
+                <defs>
+                    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#091426" />
+                        <stop offset="100%" stop-color="#152642" />
+                    </linearGradient>
+                    <linearGradient id="soilGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#0f1724" />
+                        <stop offset="100%" stop-color="#05080d" />
+                    </linearGradient>
+                    <linearGradient id="casingGrad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#1e293b" />
+                        <stop offset="50%" stop-color="#475569" />
+                        <stop offset="100%" stop-color="#1e293b" />
+                    </linearGradient>
+                    <linearGradient id="tankGrad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#1d4ed8" />
+                        <stop offset="50%" stop-color="#3b82f6" />
+                        <stop offset="100%" stop-color="#1e40af" />
+                    </linearGradient>
+                    <!-- Неоновые фильтры свечения -->
+                    <filter id="neonBlue" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="blur1" />
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur2" />
+                        <feMerge>
+                            <feMergeNode in="blur2" />
+                            <feMergeNode in="blur1" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                    <filter id="neonOrange" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+                        <feMerge>
+                            <feMergeNode in="blur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </defs>
+
+                <!-- Фон: Небо и Земля -->
+                <rect x="0" y="0" width="400" height="42" fill="url(#skyGrad)" />
+                <rect x="0" y="42" width="400" height="143" fill="url(#soilGrad)" />
                 
+                <!-- Линия горизонта -->
+                <line x1="0" y1="42" x2="400" y2="42" stroke="#10b981" stroke-width="2.5" stroke-opacity="0.8" />
+                <line x1="0" y1="44" x2="400" y2="44" stroke="#047857" stroke-width="1" stroke-opacity="0.5" />
+
                 <!-- Сетка чертежа -->
-                <g stroke="rgba(56,189,248,0.06)" stroke-width="1">
+                <g stroke="rgba(56,189,248,0.05)" stroke-width="1">
                     <line x1="0" y1="80" x2="400" y2="80" />
                     <line x1="0" y1="120" x2="400" y2="120" />
+                    <line x1="50" y1="0" x2="50" y2="175" />
                     <line x1="100" y1="0" x2="100" y2="175" />
+                    <line x1="150" y1="0" x2="150" y2="175" />
                     <line x1="200" y1="0" x2="200" y2="175" />
+                    <line x1="250" y1="0" x2="250" y2="175" />
                     <line x1="300" y1="0" x2="300" y2="175" />
-                </g>
-                
-                <!-- Обсадная труба скважины -->
-                <rect x="92" y="55" width="16" height="120" fill="#1e293b" stroke="#475569" stroke-width="1.5" />
-                <line x1="100" y1="65" x2="100" y2="175" stroke="#38bdf8" stroke-width="2" class="water-flow" />
-                
-                <!-- Ж/Б Плита якорения -->
-                <g id="svg-anchor" opacity="0.15">
-                    <rect x="52" y="138" width="96" height="12" rx="2" fill="#64748b" stroke="#94a3b8" stroke-width="1.5" />
-                    <line x1="62" y1="125" x2="62" y2="138" stroke="#f59e0b" stroke-width="2" />
-                    <line x1="138" y1="125" x2="138" y2="138" stroke="#f59e0b" stroke-width="2" />
-                    <text x="100" y="162" fill="#94a3b8" font-size="8" text-anchor="middle" font-weight="bold">Ж/Б ПЛИТА ЯКОРЕНИЯ</text>
-                </g>
-                
-                <!-- Кессон МИШКА -->
-                <g id="svg-caisson" opacity="0.22">
-                    <rect x="76" y="32" width="48" height="14" rx="2" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5" />
-                    <rect x="72" y="28" width="56" height="5" rx="2" fill="#10b981" />
-                    <rect x="60" y="46" width="80" height="78" rx="5" fill="#0f2942" stroke="#38bdf8" stroke-width="2" />
-                    <text x="100" y="60" fill="#38bdf8" font-size="8" text-anchor="middle" font-weight="bold" id="svg-caisson-label">КЕССОН МИШКА</text>
-                </g>
-                
-                <!-- Автоматика и ГА -->
-                <g id="svg-automation" opacity="0.18">
-                    <rect x="89" y="102" width="22" height="7" rx="2" fill="#f59e0b" />
-                    <rect x="68" y="72" width="22" height="32" rx="6" fill="#2563eb" stroke="#93c5fd" stroke-width="1.2" />
-                    <text x="79" y="91" fill="#fff" font-size="6" text-anchor="middle" font-weight="bold" id="svg-ga-label">ГА</text>
-                    <circle cx="115" cy="85" r="6" fill="#10b981" stroke="#fff" stroke-width="1" />
-                </g>
-                
-                <!-- Летний полив -->
-                <g id="svg-summer-tap" opacity="0.2">
-                    <line x1="125" y1="85" x2="125" y2="22" stroke="#38bdf8" stroke-width="2" />
-                    <circle cx="128" cy="22" r="3" fill="#f59e0b" />
-                </g>
-                
-                <!-- Траншея с водопроводом и греющим кабелем к дому -->
-                <g id="svg-trench" opacity="0.15">
-                    <!-- Горизонтальная траншея -->
-                    <rect x="140" y="86" width="160" height="10" fill="#0c192c" />
-                    <!-- Вертикальная шахта (ввод через фундамент) -->
-                    <rect x="295" y="42" width="10" height="44" fill="#0c192c" />
-                    
-                    <!-- Труба горизонтальная -->
-                    <line x1="140" y1="91" x2="300" y2="91" stroke="#38bdf8" stroke-width="3" class="water-flow" />
-                    <!-- Труба вертикальная в дом -->
-                    <line x1="300" y1="91" x2="300" y2="35" stroke="#38bdf8" stroke-width="3" class="water-flow" />
-                    
-                    <!-- Греющий кабель горизонтальный -->
-                    <line x1="255" y1="91" x2="300" y2="91" stroke="#ef4444" stroke-width="1.8" stroke-dasharray="3 2" />
-                    <!-- Греющий кабель вертикальный -->
-                    <line x1="300" y1="91" x2="300" y2="35" stroke="#ef4444" stroke-width="1.8" stroke-dasharray="3 2" />
-                    
-                    <text x="215" y="82" fill="#38bdf8" font-size="7.5" text-anchor="middle">ТРАНШЕЯ 1.8М + КАБЕЛЬ</text>
-                    <text x="345" y="102" fill="#94a3b8" font-size="8" text-anchor="middle" font-weight="bold">ПОДВОДКА К ДОМУ</text>
+                    <line x1="350" y1="0" x2="350" y2="175" />
                 </g>
 
-                <!-- Контур Дома (Над землей) -->
-                <g id="svg-house" opacity="0.35">
+                <!-- Скважина (Обсадная труба) -->
+                <rect x="91" y="55" width="18" height="120" fill="url(#casingGrad)" stroke="#0f172a" stroke-width="1" />
+                <!-- Вода из скважины -->
+                <line x1="100" y1="185" x2="100" y2="65" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" class="water-flow" filter="url(#neonBlue)" />
+
+                <!-- Ж/Б Плита якорения -->
+                <g id="svg-anchor" opacity="0.15" style="transition: opacity 0.4s;">
+                    <rect x="45" y="142" width="110" height="12" rx="3" fill="#475569" stroke="#94a3b8" stroke-width="1" />
+                    <path d="M60 128 L60 142 M140 128 L140 142" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" />
+                    <text x="100" y="166" fill="#94a3b8" font-size="8" text-anchor="middle" font-weight="800" letter-spacing="0.5">Ж/Б ПЛИТА 1.5х1.5м</text>
+                </g>
+
+                <!-- Кессон МИШКА -->
+                <g id="svg-caisson" opacity="0.22" style="transition: opacity 0.4s;">
+                    <!-- Горловина -->
+                    <path d="M78 28 L122 28 L122 45 L78 45 Z" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1.5" />
+                    <rect x="74" y="25" width="52" height="4" rx="2" fill="#10b981" />
+                    <rect x="74" y="25" width="52" height="1" fill="rgba(255,255,255,0.4)" />
+                    <!-- Основная камера -->
+                    <rect x="58" y="45" width="84" height="84" rx="8" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2" />
+                    <!-- Ребра жесткости -->
+                    <line x1="58" y1="65" x2="142" y2="65" stroke="#0ea5e9" stroke-width="1" opacity="0.5" />
+                    <line x1="58" y1="85" x2="142" y2="85" stroke="#0ea5e9" stroke-width="1" opacity="0.5" />
+                    <line x1="58" y1="105" x2="142" y2="105" stroke="#0ea5e9" stroke-width="1" opacity="0.5" />
+                    <!-- Световой блик объема -->
+                    <rect x="62" y="45" width="10" height="84" fill="rgba(255,255,255,0.06)" />
+                    
+                    <text x="100" y="58" fill="#e0f2fe" font-size="8.5" text-anchor="middle" font-weight="900" letter-spacing="1" id="svg-caisson-label" filter="url(#neonBlue)">КЕССОН МИШКА</text>
+                </g>
+
+                <!-- Автоматика -->
+                <g id="svg-automation" opacity="0.18" style="transition: opacity 0.4s;">
+                    <!-- Оголовок -->
+                    <rect x="88" y="102" width="24" height="8" rx="2" fill="#f59e0b" />
+                    <!-- Синий Бак ГА -->
+                    <rect x="65" y="70" width="26" height="38" rx="8" fill="url(#tankGrad)" stroke="#93c5fd" stroke-width="1" />
+                    <path d="M 68 75 Q 70 70 78 72 L 78 103 Q 70 105 68 100 Z" fill="rgba(255,255,255,0.15)" />
+                    <text x="78" y="93" fill="#ffffff" font-size="7" text-anchor="middle" font-weight="bold" id="svg-ga-label">ГА</text>
+                    <!-- Реле и Манометр -->
+                    <circle cx="118" cy="85" r="7" fill="#10b981" stroke="#fff" stroke-width="1.5" />
+                    <circle cx="118" cy="85" r="2" fill="#fff" />
+                    <line x1="100" y1="85" x2="111" y2="85" stroke="#38bdf8" stroke-width="2" />
+                </g>
+
+                <!-- Летний полив -->
+                <g id="svg-summer-tap" opacity="0.2" style="transition: opacity 0.4s;">
+                    <path d="M125 85 L125 20" stroke="#38bdf8" stroke-width="2.5" class="water-flow" filter="url(#neonBlue)" />
+                    <rect x="122" y="17" width="12" height="6" rx="1" fill="#ef4444" />
+                    <rect x="119" y="19" width="3" height="2" fill="#94a3b8" />
+                </g>
+
+                <!-- Траншея в дом -->
+                <g id="svg-trench" opacity="0.15" style="transition: opacity 0.4s;">
+                    <!-- Вырез грунта -->
+                    <path d="M 142 84 L 305 84 L 305 42 L 315 42 L 315 94 L 142 94 Z" fill="#060f1c" stroke="#1e293b" stroke-width="1" />
+                    <!-- Водопроводная труба -->
+                    <path d="M 142 89 L 305 89 L 305 35" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linejoin="round" class="water-flow" filter="url(#neonBlue)" />
+                    <!-- Греющий кабель (неоновый пунктир) -->
+                    <path d="M 255 89 L 305 89 L 305 35" fill="none" stroke="#f59e0b" stroke-width="1.5" class="cable-flow" filter="url(#neonOrange)" stroke-linejoin="round" />
+                    <!-- Оболочка утеплителя (визуально) -->
+                    <path d="M 160 85 L 295 85" stroke="#475569" stroke-width="1" stroke-dasharray="2 2" opacity="0.5" />
+                    <path d="M 160 93 L 295 93" stroke="#475569" stroke-width="1" stroke-dasharray="2 2" opacity="0.5" />
+
+                    <text x="220" y="78" fill="#38bdf8" font-size="7.5" text-anchor="middle" font-weight="600" letter-spacing="0.5">УТЕПЛЕННАЯ ТРАНШЕЯ (1.8м)</text>
+                    <text x="350" y="80" fill="#f59e0b" font-size="7" text-anchor="middle" font-weight="600">ВВОД + КАБЕЛЬ</text>
+                </g>
+
+                <!-- Дом (Над землей) -->
+                <g id="svg-house" opacity="0.35" style="transition: opacity 0.4s;">
+                    <!-- Фундамент -->
+                    <rect x="285" y="42" width="100" height="8" fill="#475569" stroke="#334155" stroke-width="1" />
+                    <!-- Стены -->
+                    <rect x="290" y="15" width="90" height="27" fill="#1e293b" stroke="#64748b" stroke-width="1.5" />
+                    <rect x="290" y="15" width="45" height="27" fill="rgba(255,255,255,0.03)" />
+                    
                     <!-- Крыша -->
-                    <polygon points="280,15 335,2 390,15" fill="#1e293b" stroke="#64748b" stroke-width="1.5" />
-                    <!-- Основное здание (начинается на уровне y=42) -->
-                    <rect x="287" y="15" width="96" height="27" fill="#1e293b" stroke="#64748b" stroke-width="1.5" />
-                    <!-- Окно -->
-                    <rect x="325" y="21" width="20" height="12" rx="2" fill="#fbbf24" opacity="0.8" />
+                    <path d="M 282 15 L 335 -2 L 388 15 Z" fill="#0f172a" stroke="#64748b" stroke-width="1.5" stroke-linejoin="round" />
+                    <path d="M 282 15 L 335 -2 L 335 15 Z" fill="rgba(255,255,255,0.05)" />
+                    
+                    <!-- Дымоход -->
+                    <rect x="360" y="2" width="8" height="12" fill="#1e293b" stroke="#64748b" stroke-width="1" />
+                    
+                    <!-- Неоновое окно с расстекловкой -->
+                    <rect x="325" y="22" width="20" height="12" rx="2" fill="#fbbf24" filter="url(#neonOrange)" opacity="0.85" />
+                    <line x1="335" y1="22" x2="335" y2="34" stroke="#1e293b" stroke-width="1.5" />
+                    <line x1="325" y1="28" x2="345" y2="28" stroke="#1e293b" stroke-width="1.5" />
                 </g>
             </svg>
         </div>
+        
         <div class="scheme-badges">
             <span class="s-badge" id="b-caisson">🛢 Кессон</span>
             <span class="s-badge" id="b-auto">⚙️ Автоматика</span>
@@ -195,6 +280,7 @@
             <span class="s-badge" id="b-anchor">⚓️ Якорение</span>
         </div>
     </div>
+    
     <div class="sec-title"><span>⚡ Готовые комплекты в 1 клик</span></div>
     <div class="sec-sub">Оптимальные инженерные сборки без забытых деталей:</div>
     <div class="presets-scroll">
@@ -361,16 +447,19 @@
         const hasCaisson = cart.k1 || cart.k2 || cart.k3 || cart.k4;
         const hasAuto = cart.p_ga50 || cart.p_ga100 || cart.p_freq || cart.p_head;
         const hasWork = cart.w_install || cart.w_pump; const hasTrench = cart.w_trench; const hasAnchor = cart.w_anchor;
-        document.getElementById('svg-caisson').setAttribute('opacity', hasCaisson ? '1' : '0.2');
-        document.getElementById('svg-automation').setAttribute('opacity', hasAuto ? '1' : '0.18');
-        document.getElementById('svg-summer-tap').setAttribute('opacity', cart.p_fit ? '1' : '0.2');
-        document.getElementById('svg-trench').setAttribute('opacity', hasTrench ? '1' : '0.15');
-        document.getElementById('svg-house').setAttribute('opacity', hasTrench ? '1' : '0.35');
-        document.getElementById('svg-anchor').setAttribute('opacity', hasAnchor ? '1' : '0.15');
+        
+        document.getElementById('svg-caisson').style.opacity = hasCaisson ? '1' : '0.22';
+        document.getElementById('svg-automation').style.opacity = hasAuto ? '1' : '0.18';
+        document.getElementById('svg-summer-tap').style.opacity = cart.p_fit ? '1' : '0.2';
+        document.getElementById('svg-trench').style.opacity = hasTrench ? '1' : '0.15';
+        document.getElementById('svg-house').style.opacity = hasTrench ? '1' : '0.35';
+        document.getElementById('svg-anchor').style.opacity = hasAnchor ? '1' : '0.15';
+        
         let cName = 'КЕССОН МИШКА'; if (cart.k1) cName = 'МИШКА 1'; if (cart.k2) cName = 'МИШКА 1 ЛОНГ'; if (cart.k3) cName = 'МИШКА 2 ЛОНГ'; if (cart.k4) cName = 'МИШКА 3 ПРОФИ';
         document.getElementById('svg-caisson-label').textContent = cName;
         let gaText = 'ГА'; if (cart.p_ga50) gaText = '50Л'; if (cart.p_ga100) gaText = '100Л'; if (cart.p_freq) gaText = 'ЧАСТ';
         document.getElementById('svg-ga-label').textContent = gaText;
+        
         document.getElementById('b-caisson').classList.toggle('active', !!hasCaisson); document.getElementById('b-auto').classList.toggle('active', !!hasAuto);
         document.getElementById('b-work').classList.toggle('active', !!hasWork); document.getElementById('b-trench').classList.toggle('active', !!hasTrench);
         document.getElementById('b-anchor').classList.toggle('active', !!hasAnchor);
