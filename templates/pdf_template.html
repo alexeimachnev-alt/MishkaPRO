@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: sans-serif; color: #333; margin: 0; padding: 20px; }
+        .header { border-bottom: 3px solid #0056b3; padding-bottom: 15px; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #0056b3; font-size: 24px; text-transform: uppercase; }
+        .header .contacts { margin-top: 10px; font-size: 14px; color: #555; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f8f9fa; font-weight: bold; }
+        .total-box { float: right; width: 300px; background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 20px; text-align: right; }
+        .total-box .price { font-size: 22px; font-weight: bold; color: #d9534f; }
+        .footer { clear: both; margin-top: 80px; font-size: 11px; color: #999; text-align: center; border-top: 1px solid #eee; padding-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Коммерческое предложение</h1>
+        <div class="contacts">
+            <strong>Исполнитель:</strong> {{ dealer_name }}<br>
+            <strong>Телефон:</strong> {{ dealer_phone }}
+        </div>
+    </div>
+
+    <h2 style="font-size: 18px;">Смета на обустройство скважины</h2>
+    <p style="font-size: 14px;">Ниже представлен расчет стоимости оборудования и материалов:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%;">№</th>
+                <th style="width: 65%;">Наименование (Оборудование + Монтаж)</th>
+                <th style="width: 10%;">Кол-во</th>
+                <th style="width: 20%;">Стоимость (₽)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>{{ item_name }} (Включая земляные работы и обвязку)</td>
+                <td>1 компл.</td>
+                <td>{{ final_price }}</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Пусконаладочные работы</td>
+                <td>1 усл.</td>
+                <td>Включено</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="total-box">
+        Итого к оплате:<br>
+        <span class="price">{{ final_price }} ₽</span>
+    </div>
+
+    <div class="footer">
+        Данное коммерческое предложение действительно в течение 14 дней и не является публичной офертой.<br>
+        Спасибо, что выбрали {{ dealer_name }}!
+    </div>
+
+</body>
+</html>
