@@ -92,7 +92,7 @@
         .modal-card.kp-theme { border-color: rgba(56, 189, 248, 0.45); }
         .modal-title { font-size: 16px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
         .upsell-item { background: rgba(255, 255, 255, 0.04); border-radius: 10px; padding: 9px 11px; margin-bottom: 6px; font-size: 12px; display: flex; justify-content: space-between; border-left: 3px solid var(--accent-amber); }
-        .btn-full { width: 100%; padding: 12px; border-radius: 11px; border: none; font-weight: 800; font-size: 13px; cursor: pointer; margin-top: 8px; }
+        .btn-full { width: 100%; padding: 12px; border-radius: 11px; border: none; font-weight: 800; font-size: 13px; cursor: margin-top: 8px; }
         .btn-amber { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; }
         .btn-blue { background: linear-gradient(135deg, #0ea5e9, #2563eb); color: #fff; }
         .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-subtle); }
@@ -249,6 +249,30 @@
         </div>
     </div>
     
+    <!-- ВОССТАНОВЛЕННЫЕ ГОТОВЫЕ СБОРКИ В 1 КЛИК -->
+    <div class="sec-title"><span id="lbl-presets">⚡ Готовые комплекты в 1 клик</span></div>
+    <div class="sec-sub" id="lbl-presets-sub">Оптимальные инженерные сборки без забытых деталей:</div>
+    <div class="presets-scroll">
+        <div class="preset-card" id="preset-summer" onclick="applyPreset('summer')">
+            <span class="preset-tag tag-eco">ЭКОНОМ</span>
+            <div class="preset-name">☀️ Дачный Полив</div>
+            <div class="preset-items">Кессон МИШКА 1 + Оголовок 125-32 + Поливочный узел и фитинги ПНД.</div>
+            <button class="preset-btn">Выбрать сборку</button>
+        </div>
+        <div class="preset-card" id="preset-winter" onclick="applyPreset('winter')">
+            <span class="preset-tag tag-hit">ХИТ ПРОДАЖ</span>
+            <div class="preset-name">❄️ Зимний Стандарт</div>
+            <div class="preset-items">МИШКА 1 Лонг + ГА 50л с автоматикой + Трос/кабель + Монтаж под ключ.</div>
+            <button class="preset-btn">Выбрать сборку</button>
+        </div>
+        <div class="preset-card" id="preset-premium" onclick="applyPreset('premium')">
+            <span class="preset-tag tag-vip">VIP ЧАСТОТНИК</span>
+            <div class="preset-name">💎 Премиум + Дом</div>
+            <div class="preset-items">МИШКА 2 Лонг + Частотник + ГА + Монтаж, ввод в дом и якорение плитой.</div>
+            <button class="preset-btn">Выбрать сборку</button>
+        </div>
+    </div>
+    
     <div class="sec-title"><span id="lbl-catalog">🛠 Индивидуальная комплектация</span></div>
     <div class="cat-tabs">
         <button class="cat-tab active" id="tab-c" onclick="switchTab('caissons', this)">🛢 Кессоны</button>
@@ -336,7 +360,8 @@
         ru: {
             ui: {
                 tab_c: "🛢 Кессоны", tab_p: "⚙️ Обвязка", tab_w: "🚜 Монтаж",
-                total: "Итоговая смета под ключ:", submit: "Сформировать КП →", cat: "🛠 Индивидуальная комплектация"
+                total: "Итоговая смета под ключ:", submit: "Сформировать КП →", cat: "🛠 Индивидуальная комплектация",
+                presets: "⚡ Готовые комплекты в 1 клик", presets_sub: "Оптимальные инженерные сборки без забытых деталей:"
             },
             items: {
                 k1: {n: "Кессон «МИШКА 1»", s: "Ø 955 × 1500 мм, полипропилен 10 мм"},
@@ -358,7 +383,8 @@
         ce: {
             ui: {
                 tab_c: "🛢 Кессонш", tab_p: "⚙️ Автоматика", tab_w: "🚜 ХIоттор",
-                total: "Йерриг смета:", submit: "КП кхолла →", cat: "🛠 Индивидуальни харжам"
+                total: "Йерриг смета:", submit: "КП кхолла →", cat: "🛠 Индивидуальни харжам",
+                presets: "⚡ Кийчча комплекташ", presets_sub: "Дика инженерни гулам:"
             },
             items: {
                 k1: {n: "Кессон «МИШКА 1»", s: "Ø 955 × 1500 мм, полипропилен 10 мм"},
@@ -380,7 +406,8 @@
         av: {
             ui: {
                 tab_c: "🛢 Кессонал", tab_p: "⚙️ Автоматика", tab_w: "🚜 Лъей",
-                total: "Кинниги багьа:", submit: "КП гьабизе →", cat: "🛠 Живго вищи"
+                total: "Кинниги багьа:", submit: "КП гьабизе →", cat: "🛠 Живго вищи",
+                presets: "⚡ ХIадурал комплектал", presets_sub: "ЛъикIаб инженернияб гулам:"
             },
             items: {
                 k1: {n: "Кессон «МИШКА 1»", s: "Ø 955 × 1500 мм, полипропилен 10 мм"},
@@ -402,7 +429,8 @@
         uz: {
             ui: {
                 tab_c: "🛢 Kessonlar", tab_p: "⚙️ Avtomatika", tab_w: "🚜 O'rnatish",
-                total: "Umumiy smeta:", submit: "KP yaratish →", cat: "🛠 Shaxsiy komplektatsiya"
+                total: "Umumiy smeta:", submit: "KP yaratish →", cat: "🛠 Shaxsiy komplektatsiya",
+                presets: "⚡ Tayyor to'plamlar", presets_sub: "Optimal muhandislik yig'malari:"
             },
             items: {
                 k1: {n: "Kesson «MISHKA 1»", s: "Ø 955 × 1500 mm, polipropilen 10 mm"},
@@ -424,7 +452,8 @@
         tg: {
             ui: {
                 tab_c: "🛢 Кессонҳо", tab_p: "⚙️ Автоматика", tab_w: "🚜 Насб кардан",
-                total: "Арзиши умумӣ:", submit: "Сохтани КП →", cat: "🛠 Маҷмӯи инфиродӣ"
+                total: "Арзиши умумӣ:", submit: "Сохтани КП →", cat: "🛠 Маҷмӯи инфиродӣ",
+                presets: "⚡ Маҷмӯаҳои тайёр", presets_sub: "Маҷмӯаҳои беҳтарини муҳандисӣ:"
             },
             items: {
                 k1: {n: "Кессони «МИШКА 1»", s: "Ø 955 × 1500 мм, полипропилен 10 мм"},
@@ -446,7 +475,8 @@
         ky: {
             ui: {
                 tab_c: "🛢 Кессондор", tab_p: "⚙️ Автоматика", tab_w: "🚜 Орнотуу",
-                total: "Жалпы баасы:", submit: "КП түзүү →", cat: "🛠 Жеке комплектация"
+                total: "Жалпы баасы:", submit: "КП түзүү →", cat: "🛠 Жеке комплектация",
+                presets: "⚡ Даяр топтомдор", presets_sub: "Оптималдуу инженердик жыйымдар:"
             },
             items: {
                 k1: {n: "Кессон «МИШКА 1»", s: "Ø 955 × 1500 мм, полипропилен 10 мм"},
@@ -468,7 +498,8 @@
         hy: {
             ui: {
                 tab_c: "🛢 Կեսոններ", tab_p: "⚙️ Ավտոմատիկա", tab_w: "🚜 Տեղադրում",
-                total: "Ընդհանուր գումարը՝", submit: "Ստեղծել КП →", cat: "🛠 Անհատական ընտրություն"
+                total: "Ընդհանուր գումարը՝", submit: "Ստեղծել КП →", cat: "🛠 Անհատական ընտրություն",
+                presets: "⚡ Պատրաստի հավաքածուներ", presets_sub: "Օպտիմալ ինժեներական լուծումներ:"
             },
             items: {
                 k1: {n: "Կեսոն «ՄԻՇԿԱ 1»", s: "Ø 955 × 1500 մմ, պոլիպրոպիլեն 10 մմ"},
@@ -490,7 +521,8 @@
         az: {
             ui: {
                 tab_c: "🛢 Kessonlar", tab_p: "⚙️ Avtomatika", tab_w: "🚜 Quraşdırma",
-                total: "Yekun smeta:", submit: "KP yarat →", cat: "🛠 Fərdi komplektasiya"
+                total: "Yekun smeta:", submit: "KP yarat →", cat: "🛠 Fərdi komplektasiya",
+                presets: "⚡ Hazır dəstlər", presets_sub: "Optimal mühəndislik yığımları:"
             },
             items: {
                 k1: {n: "Kesson «MİŞKA 1»", s: "Ø 955 × 1500 mm, polipropilen 10 mm"},
@@ -512,7 +544,8 @@
         tt: {
             ui: {
                 tab_c: "🛢 Кессоннар", tab_p: "⚙️ Автоматика", tab_w: "🚜 Урнаштыру",
-                total: "Барлыгы:", submit: "КП ясау →", cat: "🛠 Индивидуаль сайлау"
+                total: "Барлыгы:", submit: "КП ясау →", cat: "🛠 Индивидуаль сайлау",
+                presets: "⚡ Әзер җыелмалар", presets_sub: "Оптималь инженер җыелмалары:"
             },
             items: {
                 k1: {n: "Кессон «МИШКА 1»", s: "Ø 955 × 1500 мм, полипропилен 10 мм"},
@@ -534,7 +567,8 @@
         cv: {
             ui: {
                 tab_c: "🛢 Кессонсем", tab_p: "⚙️ Автоматика", tab_w: "🚜 Вырнаҫтару",
-                total: "Пӗтӗмпе:", submit: "КП хатӗрле →", cat: "🛠 Индивидуаллӑ суйлав"
+                total: "Пӗтӗмпе:", submit: "КП хатӗрле →", cat: "🛠 Индивидуаллӑ суйлав",
+                presets: "⚡ Хатер пуххисем", presets_sub: "Оптималлӑ инженер пуххисем:"
             },
             items: {
                 k1: {n: "Кессон «МИШКА 1»", s: "Ø 955 × 1500 мм, полипропилен 10 мм"},
@@ -574,6 +608,11 @@
         document.getElementById('lbl-catalog').textContent = I18N[lang].ui.cat;
         document.getElementById('dock-sub-line').textContent = I18N[lang].ui.total;
         document.getElementById('btn-submit-main').textContent = I18N[lang].ui.submit;
+        
+        const lblPresets = document.getElementById('lbl-presets');
+        if (lblPresets) lblPresets.textContent = I18N[lang].ui.presets || "⚡ Готовые комплекты в 1 клик";
+        const lblPresetsSub = document.getElementById('lbl-presets-sub');
+        if (lblPresetsSub) lblPresetsSub.textContent = I18N[lang].ui.presets_sub || "Оптимальные инженерные сборки без забытых деталей:";
         
         refreshAll();
     }
@@ -687,11 +726,23 @@
         const clientName = document.getElementById('inp-name').value.trim() || 'Индивидуальный заказчик';
         let lines = [`🐻 ПК «МИШКА» — КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ`, `📍 Объект / Заказчик: ${clientName}`, `──────────────────────────`, `📦 ОБОРУДОВАНИЕ И МАТЕРИАЛЫ:`];
         let totalClient = 0;
-        ITEMS.filter(i => i.cat !== 'works' && cart[i.id]).forEach(i => { const sum = getClientUnitPrice(i) * cart[i.id]; totalClient += sum; lines.push(`• ${i.name} (${cart[i.id]} шт.) — ${sum.toLocaleString('ru-RU')} ₽`); });
+        
+        // ВАЖНО: При формировании превью и копировании текста, используем русский язык для отправки,
+        // но здесь в окне превью можно показывать то, что уйдет клиенту (всегда на русском).
+        ITEMS.filter(i => i.cat !== 'works' && cart[i.id]).forEach(i => { 
+            const sum = getClientUnitPrice(i) * cart[i.id]; totalClient += sum; 
+            const ruName = I18N['ru'].items[i.id].n;
+            lines.push(`• ${ruName} (${cart[i.id]} шт.) — ${sum.toLocaleString('ru-RU')} ₽`); 
+        });
+        
         const workSelected = ITEMS.filter(i => i.cat === 'works' && cart[i.id]);
         if (workSelected.length > 0) {
             lines.push(''); lines.push('🚜 МОНТАЖНЫЕ РАБОТЫ ПОД КЛЮЧ:');
-            workSelected.forEach(i => { const sum = i.price * cart[i.id]; totalClient += sum; lines.push(`• ${i.name} — ${sum.toLocaleString('ru-RU')} ₽`); });
+            workSelected.forEach(i => { 
+                const sum = i.price * cart[i.id]; totalClient += sum; 
+                const ruName = I18N['ru'].items[i.id].n;
+                lines.push(`• ${ruName} — ${sum.toLocaleString('ru-RU')} ₽`); 
+            });
         }
         lines.push(`──────────────────────────`); lines.push(`✅ ИТОГО ПОД КЛЮЧ: ${totalClient.toLocaleString('ru-RU')} ₽`); lines.push(`🛡 Гарантия на корпус кессона МИШКА и герметичность!`);
         return lines.join(String.fromCharCode(10));
@@ -705,7 +756,20 @@
     }
 
     function sendToTelegram() {
-        const payloadItems = []; ITEMS.forEach(item => { if (cart[item.id]) payloadItems.push({ id: item.id, name: item.name, cat: item.cat, qty: cart[item.id], base_price: item.price }); });
+        const payloadItems = []; 
+        // ВАЖНО: Всегда отправляем на сервер названия на русском языке, независимо от выбранного в UI
+        ITEMS.forEach(item => { 
+            if (cart[item.id]) {
+                payloadItems.push({ 
+                    id: item.id, 
+                    name: I18N['ru'].items[item.id].n, 
+                    cat: item.cat, 
+                    qty: cart[item.id], 
+                    base_price: item.price 
+                });
+            }
+        });
+        
         const payload = {
             user: tg?.initDataUnsafe?.user || {},
             client_name: document.getElementById('inp-name').value.trim() || 'Не указан',
