@@ -14,6 +14,9 @@
         .brand-logo { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #0ea5e9, #2563eb); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; box-shadow: 0 0 15px rgba(14, 165, 233, 0.45); }
         .brand-text h1 { font-size: 15px; font-weight: 800; letter-spacing: 0.4px; background: linear-gradient(90deg, #fff, #93c5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .brand-text p { font-size: 11px; color: var(--text-secondary); }
+        
+        .lang-switch select { background: #1e293b; color: #fff; border: 1px solid #334155; padding: 3px 6px; border-radius: 6px; font-size: 10px; font-weight: 700; outline: none; margin-top: 4px;}
+        
         .mode-switch { display: flex; background: #09101d; border: 1px solid var(--border-subtle); border-radius: 10px; padding: 3px; }
         .mode-btn { border: none; background: transparent; color: var(--text-secondary); font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 7px; cursor: pointer; transition: all 0.25s ease; }
         .mode-btn.active { background: linear-gradient(135deg, #0284c7, #2563eb); color: #fff; box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4); }
@@ -24,7 +27,6 @@
         .live-dot { width: 8px; height: 8px; background: var(--accent-emerald); border-radius: 50%; box-shadow: 0 0 8px var(--accent-emerald); animation: pulse 1.8s infinite; }
         @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.5; } }
         
-        /* ОБНОВЛЕННЫЙ SVG КОНТЕЙНЕР И АНИМАЦИИ */
         .svg-container { width: 100%; height: 185px; border-radius: 12px; overflow: hidden; background: #050b14; border: 1px solid rgba(56, 189, 248, 0.15); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
         .water-flow { stroke-dasharray: 8 6; animation: flow 1s linear infinite; }
         .cable-flow { stroke-dasharray: 4 4; animation: flow-reverse 1.5s linear infinite; }
@@ -103,7 +105,20 @@
             <div class="brand-logo">🐻</div>
             <div class="brand-text">
                 <h1>ПК МИШКА</h1>
-                <p>Инженерный конфигуратор</p>
+                <div class="lang-switch">
+                    <select id="lang-select" onchange="changeLang(this.value)">
+                        <option value="ru">🇷🇺 Русский</option>
+                        <option value="ce">Чеченский</option>
+                        <option value="av">Дагестанский (Ав.)</option>
+                        <option value="tg">🇹🇯 Тоҷикӣ</option>
+                        <option value="uz">🇺🇿 O'zbek</option>
+                        <option value="ky">🇰🇬 Кыргызча</option>
+                        <option value="az">🇦🇿 Azərbaycan</option>
+                        <option value="hy">🇦🇲 Հայերեն</option>
+                        <option value="tt">Tatar</option>
+                        <option value="cv">Чӑвашла</option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="mode-switch">
@@ -120,7 +135,6 @@
             <span style="font-size: 11px; color: var(--text-secondary);" id="scheme-status">Выберите узел</span>
         </div>
         
-        <!-- КРАСИВАЯ АНИМИРОВАННАЯ SVG СХЕМА -->
         <div class="svg-container">
             <svg viewBox="0 0 400 175" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                 <defs>
@@ -142,129 +156,83 @@
                         <stop offset="50%" stop-color="#3b82f6" />
                         <stop offset="100%" stop-color="#1e40af" />
                     </linearGradient>
-                    <!-- Неоновые фильтры свечения -->
                     <filter id="neonBlue" x="-50%" y="-50%" width="200%" height="200%">
                         <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="blur1" />
                         <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur2" />
-                        <feMerge>
-                            <feMergeNode in="blur2" />
-                            <feMergeNode in="blur1" />
-                            <feMergeNode in="SourceGraphic" />
-                        </feMerge>
+                        <feMerge><feMergeNode in="blur2" /><feMergeNode in="blur1" /><feMergeNode in="SourceGraphic" /></feMerge>
                     </filter>
                     <filter id="neonOrange" x="-50%" y="-50%" width="200%" height="200%">
                         <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
-                        <feMerge>
-                            <feMergeNode in="blur" />
-                            <feMergeNode in="SourceGraphic" />
-                        </feMerge>
+                        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                     </filter>
                 </defs>
 
-                <!-- Фон: Небо и Земля -->
                 <rect x="0" y="0" width="400" height="42" fill="url(#skyGrad)" />
                 <rect x="0" y="42" width="400" height="143" fill="url(#soilGrad)" />
-                
-                <!-- Линия горизонта -->
                 <line x1="0" y1="42" x2="400" y2="42" stroke="#10b981" stroke-width="2.5" stroke-opacity="0.8" />
                 <line x1="0" y1="44" x2="400" y2="44" stroke="#047857" stroke-width="1" stroke-opacity="0.5" />
 
-                <!-- Сетка чертежа -->
                 <g stroke="rgba(56,189,248,0.05)" stroke-width="1">
-                    <line x1="0" y1="80" x2="400" y2="80" />
-                    <line x1="0" y1="120" x2="400" y2="120" />
-                    <line x1="50" y1="0" x2="50" y2="175" />
-                    <line x1="100" y1="0" x2="100" y2="175" />
-                    <line x1="150" y1="0" x2="150" y2="175" />
-                    <line x1="200" y1="0" x2="200" y2="175" />
-                    <line x1="250" y1="0" x2="250" y2="175" />
-                    <line x1="300" y1="0" x2="300" y2="175" />
-                    <line x1="350" y1="0" x2="350" y2="175" />
+                    <line x1="0" y1="80" x2="400" y2="80" /><line x1="0" y1="120" x2="400" y2="120" />
+                    <line x1="50" y1="0" x2="50" y2="175" /><line x1="100" y1="0" x2="100" y2="175" />
+                    <line x1="150" y1="0" x2="150" y2="175" /><line x1="200" y1="0" x2="200" y2="175" />
+                    <line x1="250" y1="0" x2="250" y2="175" /><line x1="300" y1="0" x2="300" y2="175" /><line x1="350" y1="0" x2="350" y2="175" />
                 </g>
 
-                <!-- Скважина (Обсадная труба) -->
                 <rect x="91" y="55" width="18" height="120" fill="url(#casingGrad)" stroke="#0f172a" stroke-width="1" />
-                <!-- Вода из скважины -->
                 <line x1="100" y1="185" x2="100" y2="65" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" class="water-flow" filter="url(#neonBlue)" />
 
-                <!-- Ж/Б Плита якорения -->
                 <g id="svg-anchor" opacity="0.15" style="transition: opacity 0.4s;">
                     <rect x="45" y="142" width="110" height="12" rx="3" fill="#475569" stroke="#94a3b8" stroke-width="1" />
                     <path d="M60 128 L60 142 M140 128 L140 142" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" />
                     <text x="100" y="166" fill="#94a3b8" font-size="8" text-anchor="middle" font-weight="800" letter-spacing="0.5">Ж/Б ПЛИТА 1.5х1.5м</text>
                 </g>
 
-                <!-- Кессон МИШКА -->
                 <g id="svg-caisson" opacity="0.22" style="transition: opacity 0.4s;">
-                    <!-- Горловина -->
                     <path d="M78 28 L122 28 L122 45 L78 45 Z" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1.5" />
                     <rect x="74" y="25" width="52" height="4" rx="2" fill="#10b981" />
                     <rect x="74" y="25" width="52" height="1" fill="rgba(255,255,255,0.4)" />
-                    <!-- Основная камера -->
                     <rect x="58" y="45" width="84" height="84" rx="8" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2" />
-                    <!-- Ребра жесткости -->
                     <line x1="58" y1="65" x2="142" y2="65" stroke="#0ea5e9" stroke-width="1" opacity="0.5" />
                     <line x1="58" y1="85" x2="142" y2="85" stroke="#0ea5e9" stroke-width="1" opacity="0.5" />
                     <line x1="58" y1="105" x2="142" y2="105" stroke="#0ea5e9" stroke-width="1" opacity="0.5" />
-                    <!-- Световой блик объема -->
                     <rect x="62" y="45" width="10" height="84" fill="rgba(255,255,255,0.06)" />
-                    
                     <text x="100" y="58" fill="#e0f2fe" font-size="8.5" text-anchor="middle" font-weight="900" letter-spacing="1" id="svg-caisson-label" filter="url(#neonBlue)">КЕССОН МИШКА</text>
                 </g>
 
-                <!-- Автоматика -->
                 <g id="svg-automation" opacity="0.18" style="transition: opacity 0.4s;">
-                    <!-- Оголовок -->
                     <rect x="88" y="102" width="24" height="8" rx="2" fill="#f59e0b" />
-                    <!-- Синий Бак ГА -->
                     <rect x="65" y="70" width="26" height="38" rx="8" fill="url(#tankGrad)" stroke="#93c5fd" stroke-width="1" />
                     <path d="M 68 75 Q 70 70 78 72 L 78 103 Q 70 105 68 100 Z" fill="rgba(255,255,255,0.15)" />
                     <text x="78" y="93" fill="#ffffff" font-size="7" text-anchor="middle" font-weight="bold" id="svg-ga-label">ГА</text>
-                    <!-- Реле и Манометр -->
                     <circle cx="118" cy="85" r="7" fill="#10b981" stroke="#fff" stroke-width="1.5" />
                     <circle cx="118" cy="85" r="2" fill="#fff" />
                     <line x1="100" y1="85" x2="111" y2="85" stroke="#38bdf8" stroke-width="2" />
                 </g>
 
-                <!-- Летний полив -->
                 <g id="svg-summer-tap" opacity="0.2" style="transition: opacity 0.4s;">
                     <path d="M125 85 L125 20" stroke="#38bdf8" stroke-width="2.5" class="water-flow" filter="url(#neonBlue)" />
                     <rect x="122" y="17" width="12" height="6" rx="1" fill="#ef4444" />
                     <rect x="119" y="19" width="3" height="2" fill="#94a3b8" />
                 </g>
 
-                <!-- Траншея в дом -->
                 <g id="svg-trench" opacity="0.15" style="transition: opacity 0.4s;">
-                    <!-- Вырез грунта -->
                     <path d="M 142 84 L 305 84 L 305 42 L 315 42 L 315 94 L 142 94 Z" fill="#060f1c" stroke="#1e293b" stroke-width="1" />
-                    <!-- Водопроводная труба -->
                     <path d="M 142 89 L 305 89 L 305 35" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linejoin="round" class="water-flow" filter="url(#neonBlue)" />
-                    <!-- Греющий кабель (неоновый пунктир) -->
                     <path d="M 255 89 L 305 89 L 305 35" fill="none" stroke="#f59e0b" stroke-width="1.5" class="cable-flow" filter="url(#neonOrange)" stroke-linejoin="round" />
-                    <!-- Оболочка утеплителя (визуально) -->
                     <path d="M 160 85 L 295 85" stroke="#475569" stroke-width="1" stroke-dasharray="2 2" opacity="0.5" />
                     <path d="M 160 93 L 295 93" stroke="#475569" stroke-width="1" stroke-dasharray="2 2" opacity="0.5" />
-
                     <text x="220" y="78" fill="#38bdf8" font-size="7.5" text-anchor="middle" font-weight="600" letter-spacing="0.5">УТЕПЛЕННАЯ ТРАНШЕЯ (1.8м)</text>
                     <text x="350" y="80" fill="#f59e0b" font-size="7" text-anchor="middle" font-weight="600">ВВОД + КАБЕЛЬ</text>
                 </g>
 
-                <!-- Дом (Над землей) -->
                 <g id="svg-house" opacity="0.35" style="transition: opacity 0.4s;">
-                    <!-- Фундамент -->
                     <rect x="285" y="42" width="100" height="8" fill="#475569" stroke="#334155" stroke-width="1" />
-                    <!-- Стены -->
                     <rect x="290" y="15" width="90" height="27" fill="#1e293b" stroke="#64748b" stroke-width="1.5" />
                     <rect x="290" y="15" width="45" height="27" fill="rgba(255,255,255,0.03)" />
-                    
-                    <!-- Крыша -->
                     <path d="M 282 15 L 335 -2 L 388 15 Z" fill="#0f172a" stroke="#64748b" stroke-width="1.5" stroke-linejoin="round" />
                     <path d="M 282 15 L 335 -2 L 335 15 Z" fill="rgba(255,255,255,0.05)" />
-                    
-                    <!-- Дымоход -->
                     <rect x="360" y="2" width="8" height="12" fill="#1e293b" stroke="#64748b" stroke-width="1" />
-                    
-                    <!-- Неоновое окно с расстекловкой -->
                     <rect x="325" y="22" width="20" height="12" rx="2" fill="#fbbf24" filter="url(#neonOrange)" opacity="0.85" />
                     <line x1="335" y1="22" x2="335" y2="34" stroke="#1e293b" stroke-width="1.5" />
                     <line x1="325" y1="28" x2="345" y2="28" stroke="#1e293b" stroke-width="1.5" />
@@ -281,35 +249,14 @@
         </div>
     </div>
     
-    <div class="sec-title"><span>⚡ Готовые комплекты в 1 клик</span></div>
-    <div class="sec-sub">Оптимальные инженерные сборки без забытых деталей:</div>
-    <div class="presets-scroll">
-        <div class="preset-card" id="preset-summer" onclick="applyPreset('summer')">
-            <span class="preset-tag tag-eco">ЭКОНОМ</span>
-            <div class="preset-name">☀️ Дачный Полив</div>
-            <div class="preset-items">Кессон МИШКА 1 + Оголовок 125-32 + Поливочный узел и фитинги ПНД.</div>
-            <button class="preset-btn">Выбрать сборку</button>
-        </div>
-        <div class="preset-card" id="preset-winter" onclick="applyPreset('winter')">
-            <span class="preset-tag tag-hit">ХИТ ПРОДАЖ</span>
-            <div class="preset-name">❄️ Зимний Стандарт</div>
-            <div class="preset-items">МИШКА 1 Лонг + ГА 50л с автоматикой + Трос/кабель + Монтаж под ключ.</div>
-            <button class="preset-btn">Выбрать сборку</button>
-        </div>
-        <div class="preset-card" id="preset-premium" onclick="applyPreset('premium')">
-            <span class="preset-tag tag-vip">VIP ЧАСТОТНИК</span>
-            <div class="preset-name">💎 Премиум + Дом</div>
-            <div class="preset-items">МИШКА 2 Лонг + Частотник + ГА + Монтаж, ввод в дом и якорение плитой.</div>
-            <button class="preset-btn">Выбрать сборку</button>
-        </div>
-    </div>
-    <div class="sec-title"><span>🛠 Индивидуальная комплектация</span></div>
+    <div class="sec-title"><span id="lbl-catalog">🛠 Индивидуальная комплектация</span></div>
     <div class="cat-tabs">
-        <button class="cat-tab active" onclick="switchTab('caissons', this)">🛢 Кессоны</button>
-        <button class="cat-tab" onclick="switchTab('parts', this)">⚙️ Обвязка и ГА</button>
-        <button class="cat-tab" onclick="switchTab('works', this)">🚜 Монтаж под ключ</button>
+        <button class="cat-tab active" id="tab-c" onclick="switchTab('caissons', this)">🛢 Кессоны</button>
+        <button class="cat-tab" id="tab-p" onclick="switchTab('parts', this)">⚙️ Обвязка и ГА</button>
+        <button class="cat-tab" id="tab-w" onclick="switchTab('works', this)">🚜 Монтаж под ключ</button>
     </div>
     <div id="catalog-list"></div>
+    
     <div class="dealer-panel hidden" id="dealer-box">
         <div class="dealer-head">
             <span style="font-size: 13px; font-weight: 800; color: #a5b4fc;">💼 Настройка маржи дилера</span>
@@ -325,18 +272,21 @@
             💡 Переключитесь сверху в режим <b>«👀 Клиент»</b> перед тем, как показать экран заказчику — ползунок и базовые цены склада скроются.
         </div>
     </div>
+    
     <div class="form-card">
         <div style="font-size: 13px; font-weight: 800; margin-bottom: 4px;">📍 Данные по объекту / заказчику</div>
         <input type="text" id="inp-name" class="inp" placeholder="Имя клиента или КП / населенный пункт">
         <input type="tel" id="inp-phone" class="inp" placeholder="Телефон для связи (+7...)">
     </div>
+    
     <div class="bottom-dock">
         <div class="dock-prices">
             <div class="dock-sub" id="dock-sub-line">Итоговая смета под ключ:</div>
             <div class="dock-main"><span id="dock-client-total">0</span> ₽</div>
         </div>
-        <button class="btn-submit" onclick="handleCheckoutClick()">Сформировать КП →</button>
+        <button class="btn-submit" id="btn-submit-main" onclick="handleCheckoutClick()">Сформировать КП →</button>
     </div>
+    
     <div class="overlay" id="modal-upsell">
         <div class="modal-card">
             <div class="modal-title" style="color: var(--accent-amber);">⚠️ Инженерный контроль МИШКА</div>
@@ -365,24 +315,268 @@
     const tg = window.Telegram?.WebApp;
     if (tg) { tg.expand(); tg.ready(); }
 
-    const ITEMS = [
-        { id: 'k1', cat: 'caissons', name: 'Кессон «МИШКА 1»', spec: 'Ø 955 × 1500 мм, полипропилен 10 мм', price: 29500 },
-        { id: 'k2', cat: 'caissons', name: 'Кессон «МИШКА 1 Лонг»', spec: 'Ø 955 × 2000 мм, усиленный корпус', price: 34500 },
-        { id: 'k3', cat: 'caissons', name: 'Кессон «МИШКА 2 Лонг»', spec: 'Ø 1200 × 2000 мм, просторная камера', price: 46000 },
-        { id: 'k4', cat: 'caissons', name: 'Кессон «МИШКА 3 ПРОФИ»', spec: 'Ø 1500 × 2000 мм, под 2 контура', price: 62000 },
-        { id: 'p_head', cat: 'parts', name: 'Оголовок скважинный герметичный', spec: 'Чугун/пластик 125–133 / 32 мм', price: 2600 },
-        { id: 'p_ga50', cat: 'parts', name: 'Узел автоматики с ГА 50 л', spec: 'Бак 50л, реле давления, манометр, штуцер', price: 8900 },
-        { id: 'p_ga100', cat: 'parts', name: 'Узел автоматики с ГА 100 л', spec: 'Бак 100л, реле, манометр, коллектор', price: 13500 },
-        { id: 'p_freq', cat: 'parts', name: 'Частотный преобразователь + ГА 8л', spec: 'Плавный пуск и постоянное давление в кране', price: 21500 },
-        { id: 'p_fit', cat: 'parts', name: 'Комплект обвязки ПНД и кранов', spec: 'Муфты, ниппели латунь, летний кран полива', price: 3400 },
-        { id: 'p_cable', cat: 'parts', name: 'Страховочный трос нерж. + кабель (30м)', spec: 'Трос 3 мм, зажимы нерж., водопогружной кабель', price: 4800 },
-        { id: 'w_install', cat: 'works', name: 'Монтаж кессона в котлован под ключ', spec: 'Земляные работы, спуск, гермоввод и обсыпка', price: 18500 },
-        { id: 'w_pump', cat: 'works', name: 'Опуск насоса и пусконаладка узла', spec: 'Сборка водоподъемной колонны и настройка реле', price: 7500 },
-        { id: 'w_trench', cat: 'works', name: 'Ввод трубы в дом с греющим кабелем', spec: 'Траншея ниже промерзания + утепление ввода', price: 9500 },
-        { id: 'w_anchor', cat: 'works', name: 'Якорение кессона ж/б плитой', spec: 'Защита от всплытия при высоких грунтовых водах', price: 11500 }
+    const BASE_ITEMS = [
+        { id: 'k1', cat: 'caissons', price: 29500 },
+        { id: 'k2', cat: 'caissons', price: 34500 },
+        { id: 'k3', cat: 'caissons', price: 46000 },
+        { id: 'k4', cat: 'caissons', price: 62000 },
+        { id: 'p_head', cat: 'parts', price: 2600 },
+        { id: 'p_ga50', cat: 'parts', price: 8900 },
+        { id: 'p_ga100', cat: 'parts', price: 13500 },
+        { id: 'p_freq', cat: 'parts', price: 21500 },
+        { id: 'p_fit', cat: 'parts', price: 3400 },
+        { id: 'p_cable', cat: 'parts', price: 4800 },
+        { id: 'w_install', cat: 'works', price: 18500 },
+        { id: 'w_pump', cat: 'works', price: 7500 },
+        { id: 'w_trench', cat: 'works', price: 9500 },
+        { id: 'w_anchor', cat: 'works', price: 11500 }
     ];
 
-    let cart = {}; let currentTab = 'caissons'; let viewMode = 'client'; let activePreset = null; let recommendedUpsell = [];
+    const I18N = {
+        ru: {
+            ui: {
+                tab_c: "🛢 Кессоны", tab_p: "⚙️ Обвязка", tab_w: "🚜 Монтаж",
+                total: "Итоговая смета под ключ:", submit: "Сформировать КП →", cat: "🛠 Индивидуальная комплектация"
+            },
+            items: {
+                k1: {n: "Кессон «МИШКА 1»", s: "Ø 955 × 1500 мм, полипропилен 10 мм"},
+                k2: {n: "Кессон «МИШКА 1 Лонг»", s: "Ø 955 × 2000 мм, усиленный корпус"},
+                k3: {n: "Кессон «МИШКА 2 Лонг»", s: "Ø 1200 × 2000 мм, просторная камера"},
+                k4: {n: "Кессон «МИШКА 3 ПРОФИ»", s: "Ø 1500 × 2000 мм, под 2 контура"},
+                p_head: {n: "Оголовок скважинный", s: "Герметичный, 125–133 / 32 мм"},
+                p_ga50: {n: "Узел автоматики ГА 50л", s: "Реле, манометр, штуцер"},
+                p_ga100: {n: "Узел автоматики ГА 100л", s: "Реле, манометр, коллектор"},
+                p_freq: {n: "Частотный преобразователь", s: "Плавный пуск, ГА 8л"},
+                p_fit: {n: "Комплект обвязки ПНД", s: "Фитинги, летний кран"},
+                p_cable: {n: "Трос нерж. + кабель 30м", s: "Для погружного насоса"},
+                w_install: {n: "Монтаж кессона под ключ", s: "Котлован, обсыпка, гермоввод"},
+                w_pump: {n: "Монтаж насоса", s: "Опуск, пусконаладка"},
+                w_trench: {n: "Ввод трубы в дом", s: "Траншея + греющий кабель"},
+                w_anchor: {n: "Якорение кессона", s: "Ж/Б плита от всплытия"}
+            }
+        },
+        ce: {
+            ui: {
+                tab_c: "🛢 Кессонш", tab_p: "⚙️ Автоматика", tab_w: "🚜 ХIоттор",
+                total: "Йерриг смета:", submit: "КП кхолла →", cat: "🛠 Индивидуальни харжам"
+            },
+            items: {
+                k1: {n: "Кессон «МИШКА 1»", s: "Ø 955 × 1500 мм, полипропилен 10 мм"},
+                k2: {n: "Кессон «МИШКА 1 Лонг»", s: "Ø 955 × 2000 мм, чIагIйина корпус"},
+                k3: {n: "Кессон «МИШКА 2 Лонг»", s: "Ø 1200 × 2000 мм, шуьйра камера"},
+                k4: {n: "Кессон «МИШКА 3 ПРОФИ»", s: "Ø 1500 × 2000 мм, 2 контурна"},
+                p_head: {n: "Скважинин корта", s: "Герметични, 125–133 / 32 мм"},
+                p_ga50: {n: "Автоматикин шед ГА 50л", s: "Реле, манометр, штуцер"},
+                p_ga100: {n: "Автоматикин шед ГА 100л", s: "Реле, манометр, коллектор"},
+                p_freq: {n: "Частотни преобразователь", s: "Плавни пуск, ГА 8л"},
+                p_fit: {n: "ПНД турбанийн комплект", s: "Фитингаш, аьхкенан кран"},
+                p_cable: {n: "Трос (нерж.) + кабель 30м", s: "Хи буха оьху насосна"},
+                w_install: {n: "Кессон хIоттор", s: "Ор, дIайузар, гермоввод"},
+                w_pump: {n: "Насос хIоттор", s: "Чухецар а, нисдар а"},
+                w_trench: {n: "ЦIа чу турба йигар", s: "Траншея + йохйо кабель"},
+                w_anchor: {n: "Кессон чIагIйар", s: "Э/Б экъа"}
+            }
+        },
+        av: {
+            ui: {
+                tab_c: "🛢 Кессонал", tab_p: "⚙️ Автоматика", tab_w: "🚜 Лъей",
+                total: "Кинниги багьа:", submit: "КП гьабизе →", cat: "🛠 Живго вищи"
+            },
+            items: {
+                k1: {n: "Кессон «МИШКА 1»", s: "Ø 955 × 1500 мм, полипропилен 10 мм"},
+                k2: {n: "Кессон «МИШКА 1 Лонг»", s: "Ø 955 × 2000 мм, щулияб корпус"},
+                k3: {n: "Кессон «МИШКА 2 Лонг»", s: "Ø 1200 × 2000 мм, гIатIидаб камера"},
+                k4: {n: "Кессон «МИШКА 3 ПРОФИ»", s: "Ø 1500 × 2000 мм, 2 контуралъе"},
+                p_head: {n: "Скважинаялъул бетIер", s: "Герметикияб, 125–133 / 32 мм"},
+                p_ga50: {n: "Автоматикаялъул бухьен ГА 50л", s: "Реле, манометр, штуцер"},
+                p_ga100: {n: "Автоматикаялъул бухьен ГА 100л", s: "Реле, манометр, коллектор"},
+                p_freq: {n: "Частотаялъул хисаро", s: "Тавакал биччай, ГА 8л"},
+                p_fit: {n: "ПНД турбаязул комплект", s: "Фитингал, риидалил кран"},
+                p_cable: {n: "Трос (нерж.) + кабель 30м", s: "Лъелъе унеб насосалъе"},
+                w_install: {n: "Кессон лъей", s: "Гвенд, хъуй, гермоввод"},
+                w_pump: {n: "Насос лъей", s: "Гъоркье биччай ва битIизаби"},
+                w_trench: {n: "Минаялъубе турба бачи", s: "Траншея + хинлъизабулеб кабель"},
+                w_anchor: {n: "Кессон щулияби", s: "М/Б плита"}
+            }
+        },
+        uz: {
+            ui: {
+                tab_c: "🛢 Kessonlar", tab_p: "⚙️ Avtomatika", tab_w: "🚜 O'rnatish",
+                total: "Umumiy smeta:", submit: "KP yaratish →", cat: "🛠 Shaxsiy komplektatsiya"
+            },
+            items: {
+                k1: {n: "Kesson «MISHKA 1»", s: "Ø 955 × 1500 mm, polipropilen 10 mm"},
+                k2: {n: "Kesson «MISHKA 1 Long»", s: "Ø 955 × 2000 mm, kuchaytirilgan korpus"},
+                k3: {n: "Kesson «MISHKA 2 Long»", s: "Ø 1200 × 2000 mm, keng kamera"},
+                k4: {n: "Kesson «MISHKA 3 PROFI»", s: "Ø 1500 × 2000 mm, 2 kontur uchun"},
+                p_head: {n: "Quduq qopqog'i", s: "Germetik, 125–133 / 32 mm"},
+                p_ga50: {n: "Avtomatika tuguni GA 50l", s: "Rele, manometr, shtuser"},
+                p_ga100: {n: "Avtomatika tuguni GA 100l", s: "Rele, manometr, kollektor"},
+                p_freq: {n: "Chastota o'zgartirgichi", s: "Raqamli ishga tushirish, GA 8l"},
+                p_fit: {n: "PND quvurlar to'plami", s: "Fitinglar, yozgi jo'mrak"},
+                p_cable: {n: "Zanglamas arqon + kabel 30m", s: "Suv osti nasosi uchun"},
+                w_install: {n: "Kessonni o'rnatish", s: "Qazish, ko'mish, germetik kiritish"},
+                w_pump: {n: "Nasosni o'rnatish", s: "Tushirish va sozlash"},
+                w_trench: {n: "Uyga quvur kiritish", s: "Xandaq + isitish kabeli"},
+                w_anchor: {n: "Kessonni langarlash", s: "T/B plita, suzishga qarshi"}
+            }
+        },
+        tg: {
+            ui: {
+                tab_c: "🛢 Кессонҳо", tab_p: "⚙️ Автоматика", tab_w: "🚜 Насб кардан",
+                total: "Арзиши умумӣ:", submit: "Сохтани КП →", cat: "🛠 Маҷмӯи инфиродӣ"
+            },
+            items: {
+                k1: {n: "Кессони «МИШКА 1»", s: "Ø 955 × 1500 мм, полипропилен 10 мм"},
+                k2: {n: "Кессони «МИШКА 1 Лонг»", s: "Ø 955 × 2000 мм, корпуси мустаҳкам"},
+                k3: {n: "Кессони «МИШКА 2 Лонг»", s: "Ø 1200 × 2000 мм, камераи васеъ"},
+                k4: {n: "Кессони «МИШКА 3 ПРОФИ»", s: "Ø 1500 × 2000 мм, барои 2 контур"},
+                p_head: {n: "Сарпӯши чоҳ", s: "Герметикӣ, 125–133 / 32 мм"},
+                p_ga50: {n: "Греҳи автоматика ГА 50л", s: "Реле, манометр, штутсер"},
+                p_ga100: {n: "Греҳи автоматика ГА 100л", s: "Реле, манометр, коллектор"},
+                p_freq: {n: "Табдилдиҳандаи басомад", s: "Оғози нарм, ГА 8л"},
+                p_fit: {n: "Маҷмӯи қубурҳои ПНД", s: "Фитингҳо, крани тобистона"},
+                p_cable: {n: "Арғамчини зангназананда + кабели 30м", "s": "Барои насоси зериобӣ"},
+                w_install: {n: "Насби кессон", "s": "Кафшерӣ, пур кардан, гермоввод"},
+                w_pump: {n: "Насби насос", "s": "Фаровардан ва танзим"},
+                w_trench: {n: "Вуруди қубур ба хона", "s": "Хаندق + кабели гармидиҳанда"},
+                w_anchor: {n: "Лангари кессон", "s": "Плитаи оҳану бетонӣ"}
+            }
+        },
+        ky: {
+            ui: {
+                tab_c: "🛢 Кессондор", tab_p: "⚙️ Автоматика", tab_w: "🚜 Орнотуу",
+                total: "Жалпы баасы:", submit: "КП түзүү →", cat: "🛠 Жеке комплектация"
+            },
+            items: {
+                k1: {n: "Кессон «МИШКА 1»", s: "Ø 955 × 1500 мм, полипропилен 10 мм"},
+                k2: {n: "Кессон «МИШКА 1 Лонг»", s: "Ø 955 × 2000 мм, бекемделген корпус"},
+                k3: {n: "Кессон «МИШКА 2 Лонг»", s: "Ø 1200 × 2000 мм, кенен камера"},
+                k4: {n: "Кессон «МИШКА 3 ПРОФИ»", s: "Ø 1500 × 2000 мм, 2 контур үчүн"},
+                p_head: {n: "Скважина капкагы", "s": "Герметикалык, 125–133 / 32 мм"},
+                p_ga50: {n: "Автоматика түйүнү ГА 50л", "s": "Реле, манометр, штуцер"},
+                p_ga100: {n: "Автоматика түйүнү ГА 100л", "s": "Реле, манометр, коллектор"},
+                p_freq: {n: "Жыштык өзгөрткүч", "s": "Жумшак баштоо, ГА 8л"},
+                p_fit: {n: "ПНД түтүктөр топтому", "s": "Фитингдер, жайкы кран"},
+                p_cable: {n: "Дат баспас аркан + кабель 30м", "s": "Суу астындагы насос үчүн"},
+                w_install: {n: "Кессонду орнотуу", "s": "Казуу, көмүү, гермоввод"},
+                w_pump: {n: "Насосту орнотуу", "s": "Түшүрүү жана жөндөө"},
+                w_trench: {n: "Үйгө түтүк киргизүү", "s": "Траншея + жылытуучу кабель"},
+                w_anchor: {n: "Кессонду анкерлөө", "s": "Т/Б плитасы"}
+            }
+        },
+        hy: {
+            ui: {
+                tab_c: "🛢 Կեսոններ", tab_p: "⚙️ Ավտոմատիկա", tab_w: "🚜 Տեղադրում",
+                total: "Ընդհանուր գումարը՝", submit: "Ստեղծել КП →", cat: "🛠 Անհատական ընտրություն"
+            },
+            items: {
+                k1: {n: "Կեսոն «ՄԻՇԿԱ 1»", s: "Ø 955 × 1500 մմ, պոլիպրոպիլեն 10 մմ"},
+                k2: {n: "Կեսոն «ՄԻՇԿԱ 1 Լոնգ»", s: "Ø 955 × 2000 մմ, ուժեղացված կորպուս"},
+                k3: {n: "Կեսոն «ՄԻՇԿԱ 2 Լոնգ»", s: "Ø 1200 × 2000 մմ, ընդարձակ խցիկ"},
+                k4: {n: "Կեսոն «ՄԻՇԿԱ 3 ՊՐՈՖԻ»", s: "Ø 1500 × 2000 մմ, 2 կոնտուրի համար"},
+                p_head: {n: "Հորատանցքի գլխիկ", s: "Հերմետիկ, 125–133 / 32 մմ"},
+                p_ga50: {n: "Ավտոմատիկայի հանգույց ԳԱ 50լ", s: "Ռելե, մանոմետր, արտամղիչ"},
+                p_ga100: {n: "Ավտոմատիկայի հանգույց ԳԱ 100լ", s: "Ռելե, մանոմետր, կոլեկտոր"},
+                p_freq: {n: "Հաճախականության փոխարկիչ", s: "Սահուն մեկնարկ, ԳԱ 8լ"},
+                p_fit: {n: "ՊՆԴ խողովակների հավաքածու", s: "Կցամասեր, ամառային ծորակ"},
+                p_cable: {n: "Չժանգոտվող ճոպան + մալուխ 30մ", s: "Սուզվող պոմպի համար"},
+                w_install: {n: "Կեսոնի տեղադրում", s: "Փոսորակ, լիցք, հերմետիկ մուտք"},
+                w_pump: {n: "Պոմպի տեղադրում", s: "Իջեցում և կարգավորում"},
+                w_trench: {n: "Խողովակի մուտք տուն", s: "Խրամուղի + ջեռուցվող մալուխ"},
+                w_anchor: {n: "Կեսոնի խարսխում", s: "Ե/Բ սալիկ"}
+            }
+        },
+        az: {
+            ui: {
+                tab_c: "🛢 Kessonlar", tab_p: "⚙️ Avtomatika", tab_w: "🚜 Quraşdırma",
+                total: "Yekun smeta:", submit: "KP yarat →", cat: "🛠 Fərdi komplektasiya"
+            },
+            items: {
+                k1: {n: "Kesson «MİŞKA 1»", s: "Ø 955 × 1500 mm, polipropilen 10 mm"},
+                k2: {n: "Kesson «MİŞKA 1 Long»", s: "Ø 955 × 2000 mm, gücləndirilmiş korpus"},
+                k3: {n: "Kesson «MİŞKA 2 Long»", s: "Ø 1200 × 2000 mm, geniş kamera"},
+                k4: {n: "Kesson «MİŞKA 3 PROFİ»", s: "Ø 1500 × 2000 mm, 2 kontur üçün"},
+                p_head: {n: "Quyu başlığı", s: "Germetik, 125–133 / 32 mm"},
+                p_ga50: {n: "Avtomatika qovşağı GA 50l", s: "Rele, manometr, ştuser"},
+                p_ga100: {n: "Avtomatika qovşağı GA 100l", s: "Rele, manometr, kollektor"},
+                p_freq: {n: "Tezlik çeviricisi", s: "Yumşaq başlanğıc, GA 8l"},
+                p_fit: {n: "PND boru dəsti", s: "Fitinglər, yay kranı"},
+                p_cable: {n: "Paslanmaz kəndir + kabel 30m", "s": "Daltı nasos üçün"},
+                w_install: {n: "Kessonun quraşdırılması", s: "Qazıntı, doldurma, germetik giriş"},
+                w_pump: {n: "Nasosun quraşdırılması", s: "Endirmə və tənzimləmə"},
+                w_trench: {n: "Evə boru girişi", s: "Xəndək + isitmə kabeli"},
+                w_anchor: {n: "Kessonun lövbərlənməsi", s: "D/B plitəsi"}
+            }
+        },
+        tt: {
+            ui: {
+                tab_c: "🛢 Кессоннар", tab_p: "⚙️ Автоматика", tab_w: "🚜 Урнаштыру",
+                total: "Барлыгы:", submit: "КП ясау →", cat: "🛠 Индивидуаль сайлау"
+            },
+            items: {
+                k1: {n: "Кессон «МИШКА 1»", s: "Ø 955 × 1500 мм, полипропилен 10 мм"},
+                k2: {n: "Кессон «МИШКА 1 Лонг»", s: "Ø 955 × 2000 мм, ныгытылган корпус"},
+                k3: {n: "Кессон «МИШКА 2 Лонг»", s: "Ø 1200 × 2000 мм, иркен камера"},
+                k4: {n: "Кессон «МИШКА 3 ПРОФИ»", s: "Ø 1500 × 2000 мм, 2 контур өчен"},
+                p_head: {n: "Скважина башлыгы", s: "Герметик, 125–133 / 32 мм"},
+                p_ga50: {n: "Автоматика төене ГА 50л", s: "Реле, манометр, штуцер"},
+                p_ga100: {n: "Автоматика төене ГА 100л", s: "Реле, манометр, коллектор"},
+                p_freq: {n: "Ешлык үзгәрткече", s: "Салмак кабызу, ГА 8л"},
+                p_fit: {n: "ПНД торбалар җыелмасы", s: "Фитинглар, җәйге кран"},
+                p_cable: {n: "Тутыкмас трос + кабель 30м", s: "Су асты насосы өчен"},
+                w_install: {n: "Кессон урнаштыру", s: "Чокыр, күмү, гермоввод"},
+                w_pump: {n: "Насос урнаштыру", s: "Төшерү һәм көйләү"},
+                w_trench: {n: "Өйгә торба кертү", s: "Траншея + җылытучы кабель"},
+                w_anchor: {n: "Кессонны беркетү", s: "Т/Б плитасы"}
+            }
+        },
+        cv: {
+            ui: {
+                tab_c: "🛢 Кессонсем", tab_p: "⚙️ Автоматика", tab_w: "🚜 Вырнаҫтару",
+                total: "Пӗтӗмпе:", submit: "КП хатӗрле →", cat: "🛠 Индивидуаллӑ суйлав"
+            },
+            items: {
+                k1: {n: "Кессон «МИШКА 1»", s: "Ø 955 × 1500 мм, полипропилен 10 мм"},
+                k2: {n: "Кессон «МИШКА 1 Лонг»", s: "Ø 955 × 2000 мм, ҫирӗплетнӗ корпус"},
+                k3: {n: "Кессон «МИШКА 2 Лонг»", s: "Ø 1200 × 2000 мм, анлӑ камера"},
+                k4: {n: "Кессон «МИШКА 3 ПРОФИ»", s: "Ø 1500 × 2000 мм, 2 контур валли"},
+                p_head: {n: "Скважина пуҫӗ", s: "Герметиклӑ, 125–133 / 32 мм"},
+                p_ga50: {n: "Автоматика тӗвви ГА 50л", s: "Реле, манометр, штуцер"},
+                p_ga100: {n: "Автоматика тӗвви ГА 100л", s: "Реле, манометр, коллектор"},
+                p_freq: {n: "Тӑтӑшлӑх улӑштаракан", s: "Яка хута ярасси, ГА 8л"},
+                p_fit: {n: "ПНД пӑрӑхсен пуххи", s: "Фитингсем, ҫуллахи кран"},
+                p_cable: {n: "Тутӑхман трос + кабель 30м", s: "Шыв айӗнчи насос валли"},
+                w_install: {n: "Кессон вырнаҫтарни", s: "Шӑтӑк, хуплани, гермоввод"},
+                w_pump: {n: "Насос вырнаҫтарни", s: "Антару тата йӗркелев"},
+                w_trench: {n: "Пӳрте пӑрӑх кӗртни", s: "Траншея + ӑшӑтакан кабель"},
+                w_anchor: {n: "Кессона ҫирӗплетни", s: "Т/Б плита"}
+            }
+        }
+    };
+
+    let ITEMS = [];
+    let cart = {}; let currentTab = 'caissons'; let viewMode = 'client'; let activePreset = null; let recommendedUpsell = []; let currentLang = 'ru';
+
+    function changeLang(lang) {
+        currentLang = lang;
+        ITEMS = BASE_ITEMS.map(item => ({
+            id: item.id,
+            cat: item.cat,
+            price: item.price,
+            name: I18N[lang].items[item.id].n,
+            spec: I18N[lang].items[item.id].s
+        }));
+        
+        document.getElementById('tab-c').textContent = I18N[lang].ui.tab_c;
+        document.getElementById('tab-p').textContent = I18N[lang].ui.tab_p;
+        document.getElementById('tab-w').textContent = I18N[lang].ui.tab_w;
+        document.getElementById('lbl-catalog').textContent = I18N[lang].ui.cat;
+        document.getElementById('dock-sub-line').textContent = I18N[lang].ui.total;
+        document.getElementById('btn-submit-main').textContent = I18N[lang].ui.submit;
+        
+        refreshAll();
+    }
 
     function setMode(mode) {
         viewMode = mode;
@@ -455,11 +649,6 @@
         document.getElementById('svg-house').style.opacity = hasTrench ? '1' : '0.35';
         document.getElementById('svg-anchor').style.opacity = hasAnchor ? '1' : '0.15';
         
-        let cName = 'КЕССОН МИШКА'; if (cart.k1) cName = 'МИШКА 1'; if (cart.k2) cName = 'МИШКА 1 ЛОНГ'; if (cart.k3) cName = 'МИШКА 2 ЛОНГ'; if (cart.k4) cName = 'МИШКА 3 ПРОФИ';
-        document.getElementById('svg-caisson-label').textContent = cName;
-        let gaText = 'ГА'; if (cart.p_ga50) gaText = '50Л'; if (cart.p_ga100) gaText = '100Л'; if (cart.p_freq) gaText = 'ЧАСТ';
-        document.getElementById('svg-ga-label').textContent = gaText;
-        
         document.getElementById('b-caisson').classList.toggle('active', !!hasCaisson); document.getElementById('b-auto').classList.toggle('active', !!hasAuto);
         document.getElementById('b-work').classList.toggle('active', !!hasWork); document.getElementById('b-trench').classList.toggle('active', !!hasTrench);
         document.getElementById('b-anchor').classList.toggle('active', !!hasAnchor);
@@ -467,6 +656,7 @@
     }
 
     function refreshAll() {
+        if (ITEMS.length === 0) return;
         renderCatalog(); updateSvgBlueprint(); const pct = getMarkupPct(); let goodsBase = 0, worksBase = 0;
         ITEMS.forEach(item => { const q = cart[item.id] || 0; if (!q) return; if (item.cat === 'works') worksBase += item.price * q; else goodsBase += item.price * q; });
         const dealerProfit = Math.round(goodsBase * (pct / 100)); const baseTotal = goodsBase + worksBase; const clientTotal = baseTotal + dealerProfit;
@@ -475,11 +665,11 @@
         document.getElementById('dock-client-total').textContent = clientTotal.toLocaleString('ru-RU');
         const subLine = document.getElementById('dock-sub-line');
         if (viewMode === 'dealer') subLine.textContent = `Склад: ${baseTotal.toLocaleString('ru-RU')} ₽ | Наценка: +${dealerProfit.toLocaleString('ru-RU')} ₽`;
-        else subLine.textContent = 'Итоговая смета под ключ:';
+        else subLine.textContent = I18N[currentLang].ui.total;
     }
 
     function handleCheckoutClick() {
-        if (Object.keys(cart).length === 0) return alert('Смета пуста! Выберите комплект сверху.');
+        if (Object.keys(cart).length === 0) return alert('Смета пуста!');
         const hasCaisson = cart.k1 || cart.k2 || cart.k3 || cart.k4; const hasHead = !!cart.p_head, hasFit = !!cart.p_fit, hasInstall = !!cart.w_install;
         recommendedUpsell = [];
         if (hasCaisson && !hasHead) recommendedUpsell.push('p_head'); if (hasCaisson && !hasFit) recommendedUpsell.push('p_fit'); if (hasCaisson && !hasInstall) recommendedUpsell.push('w_install');
@@ -528,6 +718,7 @@
         .catch(() => alert('Не удалось связаться с сервером.'));
     }
 
+    changeLang('ru');
     applyPreset('winter');
 </script>
 </body>
