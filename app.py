@@ -26,17 +26,25 @@ def create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total):
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=30, leftMargin=30, topMargin=30, bottomMargin=30)
 
-    # Подключаем кириллицу (шрифты нужно закинуть в папку проекта)
     try:
-        pdfmetrics.registerFont(TTFont('Calibri', 'calibri.ttf'))
+        pdfmetrics.registerFont(TTFont('Roboto', 'Roboto-Regular.ttf'))
         try:
-            pdfmetrics.registerFont(TTFont('Calibri-Bold', 'calibrib.ttf'))
-            pdfmetrics.registerFontFamily('Calibri', normal='Calibri', bold='Calibri-Bold')
+            pdfmetrics.registerFont(TTFont('Roboto-Bold', 'Roboto-Bold.ttf'))
+            pdfmetrics.registerFontFamily('Roboto', normal='Roboto', bold='Roboto-Bold')
         except:
             pass
-        font_name = 'Calibri'
+        font_name = 'Roboto'
     except Exception:
-        font_name = 'Helvetica' # Резервный
+        try:
+            pdfmetrics.registerFont(TTFont('Calibri', 'calibri.ttf'))
+            try:
+                pdfmetrics.registerFont(TTFont('Calibri-Bold', 'calibrib.ttf'))
+                pdfmetrics.registerFontFamily('Calibri', normal='Calibri', bold='Calibri-Bold')
+            except:
+                pass
+            font_name = 'Calibri'
+        except Exception:
+            font_name = 'Helvetica' # Резервный
 
     styles = getSampleStyleSheet()
     style_title = ParagraphStyle('Title', fontName=font_name, fontSize=16, alignment=1, spaceAfter=20)
@@ -92,7 +100,6 @@ def create_kp_pdf(dealer_company, client_name, items, markup_pct, client_total):
     buffer.seek(0)
     return buffer
 
-# --- РОУТЫ FLASK ---
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -121,7 +128,7 @@ def handle_test_order():
         base_total = goods_base + works_base
         client_total = base_total + markup_rub
 
-        # 1. ЧИСТОЕ КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ ДЛЯ КЛИЕНТА
+        # 1. ЧИСТОЕ КП ДЛЯ КЛИЕНТА
         kp_lines = [
             "🐻 <b>ПК «МИШКА» — КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ</b>",
             f"📍 Заказчик / Объект: <b>{client_name}</b>",
@@ -165,7 +172,7 @@ def handle_test_order():
             except Exception as e:
                 print(f"Ошибка при генерации PDF: {e}")
 
-        # 2. ВНУТРЕННЯЯ ЗАЯВКА ДЛЯ СКЛАДА И АДМИНОВ
+        # 2. ВНУТРЕННЯЯ ЗАЯВКА
         admin_lines = [
             "🔥 <b>НОВАЯ ЗАЯВКА (МИШКА: КОНФИГУРАТОР + КП)</b>",
             f"👷 Отправитель: {first_name} (@{username})",
@@ -196,14 +203,10 @@ def handle_test_order():
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
 
-# --- КОМАНДЫ БОТА ---
 @bot.message_handler(commands=["start"])
 def cmd_start(message):
     kb = InlineKeyboardMarkup()
-    kb.add(InlineKeyboardButton(
-        text="🐻 Открыть Инженерный Конфигуратор МИШКА",
-        web_app=WebAppInfo(url=APP_URL)
-    ))
+    kb.add(InlineKeyboardButton(text="🐻 Открыть Инженерный Конфигуратор МИШКА", web_app=WebAppInfo(url=APP_URL)))
     welcome_lines = [
         "👋 <b>Добро пожаловать в инженерный конфигуратор ПК «МИШКА»!</b>",
         "",
@@ -213,32 +216,23 @@ def cmd_start(message):
         "🔹 Инженерный контроль забытых деталей (Smart Upsell)",
         "🔹 Режим «Дилер / Клиент» с генерацией чистого КП."
     ]
-    bot.send_message(
-        message.chat.id,
-        NL.join(welcome_lines),
-        parse_mode="HTML",
-        reply_markup=kb
-    )
+    bot.send_message(message.chat.id, NL.join(welcome_lines), parse_mode="HTML", reply_markup=kb)
 
-# --- ФОНОВЫЙ ПОЛЛИНГ И АВТОПИНГ RENDER ---
 _threads_started = False
-
 def run_bot():
     try:
         bot.remove_webhook()
         time.sleep(1)
         bot.infinity_polling(timeout=20, long_polling_timeout=10)
     except Exception as e:
-        print(f"Polling error: {e}")
+        pass
 
 def keep_alive():
     while True:
         time.sleep(600)
         if "onrender.com" in APP_URL:
-            try:
-                requests.get(f"{APP_URL}/health", timeout=10)
-            except Exception:
-                pass
+            try: requests.get(f"{APP_URL}/health", timeout=10)
+            except: pass
 
 def start_background_workers():
     global _threads_started

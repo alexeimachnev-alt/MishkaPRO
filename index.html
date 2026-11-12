@@ -6,72 +6,28 @@
     <title>ПК МИШКА — Инженерный Конфигуратор</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root {
-            --bg-main: #060b14;
-            --bg-card: rgba(18, 28, 46, 0.78);
-            --bg-glass: rgba(15, 23, 42, 0.88);
-            --border-subtle: rgba(148, 163, 184, 0.14);
-            --accent-blue: #38bdf8;
-            --accent-indigo: #6366f1;
-            --accent-emerald: #10b981;
-            --accent-amber: #f59e0b;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-        }
-
-        body {
-            background: radial-gradient(circle at 50% 0%, #0f2442 0%, var(--bg-main) 55%);
-            color: var(--text-primary);
-            padding: 12px 14px 120px 14px;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .top-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 14px;
-            background: var(--bg-glass);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            margin-bottom: 14px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-        }
-
+        :root { --bg-main: #060b14; --bg-card: rgba(18, 28, 46, 0.78); --bg-glass: rgba(15, 23, 42, 0.88); --border-subtle: rgba(148, 163, 184, 0.14); --accent-blue: #38bdf8; --accent-indigo: #6366f1; --accent-emerald: #10b981; --accent-amber: #f59e0b; --text-primary: #f8fafc; --text-secondary: #94a3b8; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; }
+        body { background: radial-gradient(circle at 50% 0%, #0f2442 0%, var(--bg-main) 55%); color: var(--text-primary); padding: 12px 14px 120px 14px; min-height: 100vh; overflow-x: hidden; }
+        .top-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--bg-glass); backdrop-filter: blur(16px); border: 1px solid var(--border-subtle); border-radius: 16px; margin-bottom: 14px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35); }
         .brand { display: flex; align-items: center; gap: 10px; }
         .brand-logo { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #0ea5e9, #2563eb); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; box-shadow: 0 0 15px rgba(14, 165, 233, 0.45); }
         .brand-text h1 { font-size: 15px; font-weight: 800; letter-spacing: 0.4px; background: linear-gradient(90deg, #fff, #93c5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .brand-text p { font-size: 11px; color: var(--text-secondary); }
-
         .mode-switch { display: flex; background: #09101d; border: 1px solid var(--border-subtle); border-radius: 10px; padding: 3px; }
         .mode-btn { border: none; background: transparent; color: var(--text-secondary); font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 7px; cursor: pointer; transition: all 0.25s ease; }
         .mode-btn.active { background: linear-gradient(135deg, #0284c7, #2563eb); color: #fff; box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4); }
-
         .blueprint-card { background: linear-gradient(180deg, rgba(14, 30, 56, 0.85) 0%, rgba(9, 16, 29, 0.95) 100%); border: 1px solid rgba(56, 189, 248, 0.28); border-radius: 18px; padding: 12px; margin-bottom: 18px; position: relative; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45), inset 0 0 25px rgba(56, 189, 248, 0.06); }
         .blueprint-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .blueprint-title { font-size: 12px; font-weight: 700; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 0.7px; display: flex; align-items: center; gap: 6px; }
-        
         .live-dot { width: 8px; height: 8px; background: var(--accent-emerald); border-radius: 50%; box-shadow: 0 0 8px var(--accent-emerald); animation: pulse 1.8s infinite; }
         @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.5; } }
-        
         .svg-container { width: 100%; height: 175px; border-radius: 12px; overflow: hidden; background: #071120; border: 1px solid rgba(255, 255, 255, 0.05); }
         .scheme-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
         .s-badge { font-size: 10px; padding: 4px 8px; border-radius: 6px; background: rgba(255, 255, 255, 0.04); color: var(--text-secondary); border: 1px solid rgba(255, 255, 255, 0.06); transition: all 0.25s; }
         .s-badge.active { background: rgba(16, 185, 129, 0.16); color: #34d399; border-color: rgba(16, 185, 129, 0.4); font-weight: 600; }
-
         .sec-title { font-size: 15px; font-weight: 800; margin: 18px 0 8px; display: flex; align-items: center; justify-content: space-between; }
         .sec-sub { font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; }
-
         .presets-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
         .presets-scroll::-webkit-scrollbar { display: none; }
         .preset-card { min-width: 225px; background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95)); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 14px; flex-shrink: 0; position: relative; cursor: pointer; transition: all 0.25s ease; }
@@ -84,12 +40,10 @@
         .preset-items { font-size: 11px; color: var(--text-secondary); line-height: 1.35; margin-bottom: 12px; min-height: 45px; }
         .preset-btn { width: 100%; padding: 8px; border-radius: 10px; border: none; background: rgba(56, 189, 248, 0.14); color: var(--accent-blue); font-weight: 700; font-size: 12px; cursor: pointer; }
         .preset-card.selected .preset-btn { background: var(--accent-blue); color: #060b14; }
-
         .cat-tabs { display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto; scrollbar-width: none; }
         .cat-tabs::-webkit-scrollbar { display: none; }
         .cat-tab { padding: 8px 13px; border-radius: 11px; background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-secondary); font-size: 12px; font-weight: 700; white-space: nowrap; cursor: pointer; transition: 0.2s; }
         .cat-tab.active { background: rgba(56, 189, 248, 0.16); color: #fff; border-color: var(--accent-blue); }
-
         .product-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 12px; margin-bottom: 9px; display: flex; justify-content: space-between; align-items: center; gap: 10px; transition: border-color 0.2s, transform 0.15s; }
         .product-card.in-cart { border-color: rgba(16, 185, 129, 0.5); background: linear-gradient(90deg, rgba(16, 185, 129, 0.08), var(--bg-card)); }
         .prod-info { flex: 1; }
@@ -98,30 +52,24 @@
         .prod-price-row { display: flex; align-items: center; gap: 8px; }
         .prod-price { font-size: 13px; font-weight: 800; color: var(--accent-blue); }
         .prod-base-hint { font-size: 10px; color: var(--text-secondary); background: rgba(255, 255, 255, 0.05); padding: 2px 6px; border-radius: 4px; }
-
         .qty-box { display: flex; align-items: center; gap: 8px; background: #09101d; padding: 4px; border-radius: 10px; border: 1px solid var(--border-subtle); }
         .qty-btn { width: 28px; height: 28px; border-radius: 7px; border: none; background: #1e293b; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; }
         .qty-btn.plus { background: linear-gradient(135deg, #0ea5e9, #2563eb); }
         .qty-num { min-width: 18px; text-align: center; font-size: 13px; font-weight: 800; }
-
         .dealer-panel { background: linear-gradient(145deg, rgba(30, 27, 75, 0.65), rgba(15, 23, 42, 0.9)); border: 1px solid rgba(99, 102, 241, 0.4); border-radius: 16px; padding: 14px; margin-top: 18px; }
         .dealer-panel.hidden { display: none; }
         .dealer-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .dealer-profit { background: rgba(16, 185, 129, 0.18); color: #34d399; font-weight: 800; font-size: 12px; padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.35); }
-        
         input[type="range"] { width: 100%; accent-color: var(--accent-indigo); margin: 6px 0 10px; }
-
         .form-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 14px; margin-top: 14px; }
         .inp { width: 100%; background: #09101d; border: 1px solid var(--border-subtle); color: #fff; padding: 11px 12px; border-radius: 10px; font-size: 13px; margin-top: 8px; outline: none; }
         .inp:focus { border-color: var(--accent-blue); }
-
         .bottom-dock { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(9, 15, 28, 0.92); backdrop-filter: blur(18px); border-top: 1px solid rgba(56, 189, 248, 0.25); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; z-index: 50; box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5); }
         .dock-prices { line-height: 1.3; }
         .dock-sub { font-size: 11px; color: var(--text-secondary); }
         .dock-main { font-size: 18px; font-weight: 900; color: #fff; }
         .dock-main span { color: var(--accent-emerald); }
         .btn-submit { background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; padding: 13px 20px; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4); }
-
         .overlay { display: none; position: fixed; inset: 0; background: rgba(3, 7, 18, 0.84); backdrop-filter: blur(8px); z-index: 100; align-items: center; justify-content: center; padding: 16px; }
         .modal-card { background: #111c2d; border: 1px solid rgba(245, 158, 11, 0.45); border-radius: 18px; padding: 18px; max-width: 390px; width: 100%; max-height: 88vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7); }
         .modal-card.kp-theme { border-color: rgba(56, 189, 248, 0.45); }
@@ -132,7 +80,6 @@
         .btn-blue { background: linear-gradient(135deg, #0ea5e9, #2563eb); color: #fff; }
         .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-subtle); }
         .kp-sheet { background: #09101d; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px; font-size: 12px; line-height: 1.5; margin: 10px 0; white-space: pre-wrap; }
-
         .water-flow { stroke-dasharray: 6 4; animation: flow 1s linear infinite; }
         @keyframes flow { to { stroke-dashoffset: -10; } }
     </style>
@@ -151,7 +98,6 @@
             <button class="mode-btn" id="btn-mode-dealer" onclick="setMode('dealer')">💼 Дилер</button>
         </div>
     </div>
-
     <div class="blueprint-card">
         <div class="blueprint-head">
             <div class="blueprint-title">
@@ -161,9 +107,12 @@
         </div>
         <div class="svg-container">
             <svg viewBox="0 0 400 175" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <!-- Небо и грунт -->
                 <rect x="0" y="0" width="400" height="42" fill="#0c192c" />
                 <rect x="0" y="42" width="400" height="133" fill="#101824" />
                 <line x1="0" y1="42" x2="400" y2="42" stroke="#10b981" stroke-width="2" stroke-opacity="0.6" />
+                
+                <!-- Сетка чертежа -->
                 <g stroke="rgba(56,189,248,0.06)" stroke-width="1">
                     <line x1="0" y1="80" x2="400" y2="80" />
                     <line x1="0" y1="120" x2="400" y2="120" />
@@ -171,41 +120,70 @@
                     <line x1="200" y1="0" x2="200" y2="175" />
                     <line x1="300" y1="0" x2="300" y2="175" />
                 </g>
+                
+                <!-- Обсадная труба скважины -->
                 <rect x="92" y="55" width="16" height="120" fill="#1e293b" stroke="#475569" stroke-width="1.5" />
                 <line x1="100" y1="65" x2="100" y2="175" stroke="#38bdf8" stroke-width="2" class="water-flow" />
+                
+                <!-- Ж/Б Плита якорения -->
                 <g id="svg-anchor" opacity="0.15">
                     <rect x="52" y="138" width="96" height="12" rx="2" fill="#64748b" stroke="#94a3b8" stroke-width="1.5" />
                     <line x1="62" y1="125" x2="62" y2="138" stroke="#f59e0b" stroke-width="2" />
                     <line x1="138" y1="125" x2="138" y2="138" stroke="#f59e0b" stroke-width="2" />
                     <text x="100" y="162" fill="#94a3b8" font-size="8" text-anchor="middle" font-weight="bold">Ж/Б ПЛИТА ЯКОРЕНИЯ</text>
                 </g>
+                
+                <!-- Кессон МИШКА -->
                 <g id="svg-caisson" opacity="0.22">
                     <rect x="76" y="32" width="48" height="14" rx="2" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5" />
                     <rect x="72" y="28" width="56" height="5" rx="2" fill="#10b981" />
                     <rect x="60" y="46" width="80" height="78" rx="5" fill="#0f2942" stroke="#38bdf8" stroke-width="2" />
                     <text x="100" y="60" fill="#38bdf8" font-size="8" text-anchor="middle" font-weight="bold" id="svg-caisson-label">КЕССОН МИШКА</text>
                 </g>
+                
+                <!-- Автоматика и ГА -->
                 <g id="svg-automation" opacity="0.18">
                     <rect x="89" y="102" width="22" height="7" rx="2" fill="#f59e0b" />
                     <rect x="68" y="72" width="22" height="32" rx="6" fill="#2563eb" stroke="#93c5fd" stroke-width="1.2" />
                     <text x="79" y="91" fill="#fff" font-size="6" text-anchor="middle" font-weight="bold" id="svg-ga-label">ГА</text>
                     <circle cx="115" cy="85" r="6" fill="#10b981" stroke="#fff" stroke-width="1" />
                 </g>
+                
+                <!-- Летний полив -->
                 <g id="svg-summer-tap" opacity="0.2">
                     <line x1="125" y1="85" x2="125" y2="22" stroke="#38bdf8" stroke-width="2" />
                     <circle cx="128" cy="22" r="3" fill="#f59e0b" />
                 </g>
+                
+                <!-- Траншея с водопроводом и греющим кабелем к дому -->
                 <g id="svg-trench" opacity="0.15">
-                    <rect x="140" y="86" width="150" height="10" fill="#0c192c" />
-                    <line x1="140" y1="91" x2="290" y2="91" stroke="#38bdf8" stroke-width="3" class="water-flow" />
-                    <line x1="255" y1="91" x2="290" y2="55" stroke="#ef4444" stroke-width="1.8" stroke-dasharray="3 2" />
+                    <!-- Горизонтальная траншея -->
+                    <rect x="140" y="86" width="160" height="10" fill="#0c192c" />
+                    <!-- Вертикальная шахта (ввод через фундамент) -->
+                    <rect x="295" y="42" width="10" height="44" fill="#0c192c" />
+                    
+                    <!-- Труба горизонтальная -->
+                    <line x1="140" y1="91" x2="300" y2="91" stroke="#38bdf8" stroke-width="3" class="water-flow" />
+                    <!-- Труба вертикальная в дом -->
+                    <line x1="300" y1="91" x2="300" y2="35" stroke="#38bdf8" stroke-width="3" class="water-flow" />
+                    
+                    <!-- Греющий кабель горизонтальный -->
+                    <line x1="255" y1="91" x2="300" y2="91" stroke="#ef4444" stroke-width="1.8" stroke-dasharray="3 2" />
+                    <!-- Греющий кабель вертикальный -->
+                    <line x1="300" y1="91" x2="300" y2="35" stroke="#ef4444" stroke-width="1.8" stroke-dasharray="3 2" />
+                    
                     <text x="215" y="82" fill="#38bdf8" font-size="7.5" text-anchor="middle">ТРАНШЕЯ 1.8М + КАБЕЛЬ</text>
+                    <text x="345" y="102" fill="#94a3b8" font-size="8" text-anchor="middle" font-weight="bold">ПОДВОДКА К ДОМУ</text>
                 </g>
+
+                <!-- Контур Дома (Над землей) -->
                 <g id="svg-house" opacity="0.35">
-                    <polygon points="285,42 335,12 385,42" fill="#1e293b" stroke="#64748b" stroke-width="1.5" />
-                    <rect x="292" y="42" width="86" height="45" fill="#1e293b" stroke="#64748b" stroke-width="1.5" />
-                    <rect x="325" y="53" width="20" height="18" rx="2" fill="#fbbf24" opacity="0.8" />
-                    <text x="335" y="102" fill="#94a3b8" font-size="8" text-anchor="middle" font-weight="bold">ВВОД В ДОМ</text>
+                    <!-- Крыша -->
+                    <polygon points="280,15 335,2 390,15" fill="#1e293b" stroke="#64748b" stroke-width="1.5" />
+                    <!-- Основное здание (начинается на уровне y=42) -->
+                    <rect x="287" y="15" width="96" height="27" fill="#1e293b" stroke="#64748b" stroke-width="1.5" />
+                    <!-- Окно -->
+                    <rect x="325" y="21" width="20" height="12" rx="2" fill="#fbbf24" opacity="0.8" />
                 </g>
             </svg>
         </div>
@@ -217,7 +195,6 @@
             <span class="s-badge" id="b-anchor">⚓️ Якорение</span>
         </div>
     </div>
-
     <div class="sec-title"><span>⚡ Готовые комплекты в 1 клик</span></div>
     <div class="sec-sub">Оптимальные инженерные сборки без забытых деталей:</div>
     <div class="presets-scroll">
@@ -240,7 +217,6 @@
             <button class="preset-btn">Выбрать сборку</button>
         </div>
     </div>
-
     <div class="sec-title"><span>🛠 Индивидуальная комплектация</span></div>
     <div class="cat-tabs">
         <button class="cat-tab active" onclick="switchTab('caissons', this)">🛢 Кессоны</button>
@@ -248,7 +224,6 @@
         <button class="cat-tab" onclick="switchTab('works', this)">🚜 Монтаж под ключ</button>
     </div>
     <div id="catalog-list"></div>
-
     <div class="dealer-panel hidden" id="dealer-box">
         <div class="dealer-head">
             <span style="font-size: 13px; font-weight: 800; color: #a5b4fc;">💼 Настройка маржи дилера</span>
@@ -264,13 +239,11 @@
             💡 Переключитесь сверху в режим <b>«👀 Клиент»</b> перед тем, как показать экран заказчику — ползунок и базовые цены склада скроются.
         </div>
     </div>
-
     <div class="form-card">
         <div style="font-size: 13px; font-weight: 800; margin-bottom: 4px;">📍 Данные по объекту / заказчику</div>
         <input type="text" id="inp-name" class="inp" placeholder="Имя клиента или КП / населенный пункт">
         <input type="tel" id="inp-phone" class="inp" placeholder="Телефон для связи (+7...)">
     </div>
-
     <div class="bottom-dock">
         <div class="dock-prices">
             <div class="dock-sub" id="dock-sub-line">Итоговая смета под ключ:</div>
@@ -278,7 +251,6 @@
         </div>
         <button class="btn-submit" onclick="handleCheckoutClick()">Сформировать КП →</button>
     </div>
-
     <div class="overlay" id="modal-upsell">
         <div class="modal-card">
             <div class="modal-title" style="color: var(--accent-amber);">⚠️ Инженерный контроль МИШКА</div>
@@ -290,7 +262,6 @@
             <button class="btn-full btn-ghost" onclick="openKpPreview()">Продолжить без добавления</button>
         </div>
     </div>
-
     <div class="overlay" id="modal-kp">
         <div class="modal-card kp-theme">
             <div class="modal-title" style="color: var(--accent-blue);">📄 Готовое КП для клиента</div>
@@ -325,11 +296,7 @@
         { id: 'w_anchor', cat: 'works', name: 'Якорение кессона ж/б плитой', spec: 'Защита от всплытия при высоких грунтовых водах', price: 11500 }
     ];
 
-    let cart = {};
-    let currentTab = 'caissons';
-    let viewMode = 'client';
-    let activePreset = null;
-    let recommendedUpsell = [];
+    let cart = {}; let currentTab = 'caissons'; let viewMode = 'client'; let activePreset = null; let recommendedUpsell = [];
 
     function setMode(mode) {
         viewMode = mode;
@@ -340,64 +307,49 @@
     }
 
     function switchTab(tab, btnEl) {
-        currentTab = tab;
-        document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
-        if (btnEl) btnEl.classList.add('active');
-        renderCatalog();
+        currentTab = tab; document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+        if (btnEl) btnEl.classList.add('active'); renderCatalog();
     }
 
     function getMarkupPct() { return parseInt(document.getElementById('markup-slider').value || 0); }
-
     function getClientUnitPrice(item) {
-        if (item.cat === 'works') return item.price;
-        return Math.round(item.price * (1 + getMarkupPct() / 100));
+        if (item.cat === 'works') return item.price; return Math.round(item.price * (1 + getMarkupPct() / 100));
     }
 
     function renderCatalog() {
-        const container = document.getElementById('catalog-list');
-        container.innerHTML = '';
+        const container = document.getElementById('catalog-list'); container.innerHTML = '';
         const pct = getMarkupPct();
         ITEMS.filter(i => i.cat === currentTab).forEach(item => {
             const qty = cart[item.id] || 0;
-            const displayPrice = getClientUnitPrice(item);
             const showDealerHint = viewMode === 'dealer' && item.cat !== 'works' && pct > 0;
             const card = document.createElement('div');
             card.className = 'product-card' + (qty > 0 ? ' in-cart' : '');
             card.innerHTML = `
-                <div class="prod-info">
-                    <div class="prod-title">${item.name}</div>
-                    <div class="prod-spec">${item.spec}</div>
-                    <div class="prod-price-row">
-                        <span class="prod-price">${displayPrice.toLocaleString('ru-RU')} ₽</span>
+                <div class="prod-info"><div class="prod-title">${item.name}</div><div class="prod-spec">${item.spec}</div>
+                    <div class="prod-price-row"><span class="prod-price">${getClientUnitPrice(item).toLocaleString('ru-RU')} ₽</span>
                         ${showDealerHint ? `<span class="prod-base-hint">Склад: ${item.price.toLocaleString('ru-RU')} ₽</span>` : ''}
                     </div>
                 </div>
-                <div class="qty-box">
-                    <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
-                    <span class="qty-num">${qty}</span>
-                    <button class="qty-btn plus" onclick="changeQty('${item.id}', 1)">+</button>
-                </div>
+                <div class="qty-box"><button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
+                    <span class="qty-num">${qty}</span><button class="qty-btn plus" onclick="changeQty('${item.id}', 1)">+</button></div>
             `;
             container.appendChild(card);
         });
     }
 
     function changeQty(id, delta) {
-        activePreset = null;
-        document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('selected'));
+        activePreset = null; document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('selected'));
         const clickedItem = ITEMS.find(x => x.id === id);
         if (clickedItem && clickedItem.cat === 'caissons' && delta > 0) {
             ['k1', 'k2', 'k3', 'k4'].forEach(kId => { if (kId !== id) delete cart[kId]; });
         }
         const nextVal = Math.max(0, (cart[id] || 0) + delta);
-        if (nextVal === 0) delete cart[id];
-        else cart[id] = nextVal;
+        if (nextVal === 0) delete cart[id]; else cart[id] = nextVal;
         refreshAll();
     }
 
     function applyPreset(presetKey) {
-        activePreset = presetKey;
-        document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('selected'));
+        activePreset = presetKey; document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('selected'));
         document.getElementById('preset-' + presetKey)?.classList.add('selected');
         if (presetKey === 'summer') cart = { k1: 1, p_head: 1, p_fit: 1 };
         else if (presetKey === 'winter') cart = { k2: 1, p_head: 1, p_ga50: 1, p_fit: 1, p_cable: 1, w_install: 1, w_pump: 1 };
@@ -408,45 +360,27 @@
     function updateSvgBlueprint() {
         const hasCaisson = cart.k1 || cart.k2 || cart.k3 || cart.k4;
         const hasAuto = cart.p_ga50 || cart.p_ga100 || cart.p_freq || cart.p_head;
-        const hasWork = cart.w_install || cart.w_pump;
-        const hasTrench = cart.w_trench;
-        const hasAnchor = cart.w_anchor;
+        const hasWork = cart.w_install || cart.w_pump; const hasTrench = cart.w_trench; const hasAnchor = cart.w_anchor;
         document.getElementById('svg-caisson').setAttribute('opacity', hasCaisson ? '1' : '0.2');
         document.getElementById('svg-automation').setAttribute('opacity', hasAuto ? '1' : '0.18');
         document.getElementById('svg-summer-tap').setAttribute('opacity', cart.p_fit ? '1' : '0.2');
         document.getElementById('svg-trench').setAttribute('opacity', hasTrench ? '1' : '0.15');
         document.getElementById('svg-house').setAttribute('opacity', hasTrench ? '1' : '0.35');
         document.getElementById('svg-anchor').setAttribute('opacity', hasAnchor ? '1' : '0.15');
-        let cName = 'КЕССОН МИШКА';
-        if (cart.k1) cName = 'МИШКА 1'; if (cart.k2) cName = 'МИШКА 1 ЛОНГ';
-        if (cart.k3) cName = 'МИШКА 2 ЛОНГ'; if (cart.k4) cName = 'МИШКА 3 ПРОФИ';
+        let cName = 'КЕССОН МИШКА'; if (cart.k1) cName = 'МИШКА 1'; if (cart.k2) cName = 'МИШКА 1 ЛОНГ'; if (cart.k3) cName = 'МИШКА 2 ЛОНГ'; if (cart.k4) cName = 'МИШКА 3 ПРОФИ';
         document.getElementById('svg-caisson-label').textContent = cName;
-        let gaText = 'ГА';
-        if (cart.p_ga50) gaText = '50Л'; if (cart.p_ga100) gaText = '100Л'; if (cart.p_freq) gaText = 'ЧАСТ';
+        let gaText = 'ГА'; if (cart.p_ga50) gaText = '50Л'; if (cart.p_ga100) gaText = '100Л'; if (cart.p_freq) gaText = 'ЧАСТ';
         document.getElementById('svg-ga-label').textContent = gaText;
-        document.getElementById('b-caisson').classList.toggle('active', !!hasCaisson);
-        document.getElementById('b-auto').classList.toggle('active', !!hasAuto);
-        document.getElementById('b-work').classList.toggle('active', !!hasWork);
-        document.getElementById('b-trench').classList.toggle('active', !!hasTrench);
+        document.getElementById('b-caisson').classList.toggle('active', !!hasCaisson); document.getElementById('b-auto').classList.toggle('active', !!hasAuto);
+        document.getElementById('b-work').classList.toggle('active', !!hasWork); document.getElementById('b-trench').classList.toggle('active', !!hasTrench);
         document.getElementById('b-anchor').classList.toggle('active', !!hasAnchor);
-        const count = Object.values(cart).reduce((a, b) => a + b, 0);
-        document.getElementById('scheme-status').textContent = count > 0 ? `Позиций в узле: ${count}` : 'Выберите узел';
+        const count = Object.values(cart).reduce((a, b) => a + b, 0); document.getElementById('scheme-status').textContent = count > 0 ? `Позиций в узле: ${count}` : 'Выберите узел';
     }
 
     function refreshAll() {
-        renderCatalog();
-        updateSvgBlueprint();
-        const pct = getMarkupPct();
-        let goodsBase = 0, worksBase = 0;
-        ITEMS.forEach(item => {
-            const q = cart[item.id] || 0;
-            if (!q) return;
-            if (item.cat === 'works') worksBase += item.price * q;
-            else goodsBase += item.price * q;
-        });
-        const dealerProfit = Math.round(goodsBase * (pct / 100));
-        const baseTotal = goodsBase + worksBase;
-        const clientTotal = baseTotal + dealerProfit;
+        renderCatalog(); updateSvgBlueprint(); const pct = getMarkupPct(); let goodsBase = 0, worksBase = 0;
+        ITEMS.forEach(item => { const q = cart[item.id] || 0; if (!q) return; if (item.cat === 'works') worksBase += item.price * q; else goodsBase += item.price * q; });
+        const dealerProfit = Math.round(goodsBase * (pct / 100)); const baseTotal = goodsBase + worksBase; const clientTotal = baseTotal + dealerProfit;
         document.getElementById('markup-pct-label').textContent = `${pct}%`;
         document.getElementById('dealer-profit-badge').textContent = `+${dealerProfit.toLocaleString('ru-RU')} ₽ ваш доход`;
         document.getElementById('dock-client-total').textContent = clientTotal.toLocaleString('ru-RU');
@@ -456,93 +390,53 @@
     }
 
     function handleCheckoutClick() {
-        if (Object.keys(cart).length === 0) return alert('Смета пуста! Выберите готовый комплект сверху или добавьте товары.');
-        const hasCaisson = cart.k1 || cart.k2 || cart.k3 || cart.k4;
-        const hasHead = !!cart.p_head, hasFit = !!cart.p_fit, hasInstall = !!cart.w_install;
+        if (Object.keys(cart).length === 0) return alert('Смета пуста! Выберите комплект сверху.');
+        const hasCaisson = cart.k1 || cart.k2 || cart.k3 || cart.k4; const hasHead = !!cart.p_head, hasFit = !!cart.p_fit, hasInstall = !!cart.w_install;
         recommendedUpsell = [];
-        if (hasCaisson && !hasHead) recommendedUpsell.push('p_head');
-        if (hasCaisson && !hasFit) recommendedUpsell.push('p_fit');
-        if (hasCaisson && !hasInstall) recommendedUpsell.push('w_install');
+        if (hasCaisson && !hasHead) recommendedUpsell.push('p_head'); if (hasCaisson && !hasFit) recommendedUpsell.push('p_fit'); if (hasCaisson && !hasInstall) recommendedUpsell.push('w_install');
         if (recommendedUpsell.length > 0) {
-            const box = document.getElementById('upsell-container');
-            box.innerHTML = recommendedUpsell.map(id => {
-                const it = ITEMS.find(x => x.id === id);
-                return `<div class="upsell-item"><span>${it.name}</span><b>+${getClientUnitPrice(it).toLocaleString('ru-RU')} ₽</b></div>`;
+            document.getElementById('upsell-container').innerHTML = recommendedUpsell.map(id => {
+                const it = ITEMS.find(x => x.id === id); return `<div class="upsell-item"><span>${it.name}</span><b>+${getClientUnitPrice(it).toLocaleString('ru-RU')} ₽</b></div>`;
             }).join('');
             document.getElementById('modal-upsell').style.display = 'flex';
         } else openKpPreview();
     }
 
-    function applyUpsellAndProceed() {
-        recommendedUpsell.forEach(id => { cart[id] = (cart[id] || 0) + 1; });
-        document.getElementById('modal-upsell').style.display = 'none';
-        refreshAll();
-        openKpPreview();
-    }
+    function applyUpsellAndProceed() { recommendedUpsell.forEach(id => { cart[id] = (cart[id] || 0) + 1; }); document.getElementById('modal-upsell').style.display = 'none'; refreshAll(); openKpPreview(); }
 
     function buildCleanKpText() {
         const clientName = document.getElementById('inp-name').value.trim() || 'Индивидуальный заказчик';
         let lines = [`🐻 ПК «МИШКА» — КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ`, `📍 Объект / Заказчик: ${clientName}`, `──────────────────────────`, `📦 ОБОРУДОВАНИЕ И МАТЕРИАЛЫ:`];
         let totalClient = 0;
-        ITEMS.filter(i => i.cat !== 'works' && cart[i.id]).forEach(i => {
-            const sum = getClientUnitPrice(i) * cart[i.id]; totalClient += sum;
-            lines.push(`• ${i.name} (${cart[i.id]} шт.) — ${sum.toLocaleString('ru-RU')} ₽`);
-        });
+        ITEMS.filter(i => i.cat !== 'works' && cart[i.id]).forEach(i => { const sum = getClientUnitPrice(i) * cart[i.id]; totalClient += sum; lines.push(`• ${i.name} (${cart[i.id]} шт.) — ${sum.toLocaleString('ru-RU')} ₽`); });
         const workSelected = ITEMS.filter(i => i.cat === 'works' && cart[i.id]);
         if (workSelected.length > 0) {
             lines.push(''); lines.push('🚜 МОНТАЖНЫЕ РАБОТЫ ПОД КЛЮЧ:');
-            workSelected.forEach(i => {
-                const sum = i.price * cart[i.id]; totalClient += sum;
-                lines.push(`• ${i.name} — ${sum.toLocaleString('ru-RU')} ₽`);
-            });
+            workSelected.forEach(i => { const sum = i.price * cart[i.id]; totalClient += sum; lines.push(`• ${i.name} — ${sum.toLocaleString('ru-RU')} ₽`); });
         }
-        lines.push(`──────────────────────────`);
-        lines.push(`✅ ИТОГО ПОД КЛЮЧ: ${totalClient.toLocaleString('ru-RU')} ₽`);
-        lines.push(`🛡 Гарантия на корпус кессона МИШКА и герметичность!`);
+        lines.push(`──────────────────────────`); lines.push(`✅ ИТОГО ПОД КЛЮЧ: ${totalClient.toLocaleString('ru-RU')} ₽`); lines.push(`🛡 Гарантия на корпус кессона МИШКА и герметичность!`);
         return lines.join(String.fromCharCode(10));
     }
 
-    function openKpPreview() {
-        document.getElementById('modal-upsell').style.display = 'none';
-        document.getElementById('kp-text-preview').textContent = buildCleanKpText();
-        document.getElementById('modal-kp').style.display = 'flex';
-    }
-
-    function closeModals() {
-        document.getElementById('modal-upsell').style.display = 'none'; document.getElementById('modal-kp').style.display = 'none';
-    }
+    function openKpPreview() { document.getElementById('modal-upsell').style.display = 'none'; document.getElementById('kp-text-preview').textContent = buildCleanKpText(); document.getElementById('modal-kp').style.display = 'flex'; }
+    function closeModals() { document.getElementById('modal-upsell').style.display = 'none'; document.getElementById('modal-kp').style.display = 'none'; }
 
     function copyKpText() {
-        navigator.clipboard.writeText(buildCleanKpText()).then(() => {
-            const btn = document.getElementById('btn-copy-kp');
-            btn.textContent = '✅ Скопировано в буфер обмена!';
-            setTimeout(() => { btn.textContent = '📋 Скопировать текст КП'; }, 2000);
-        });
+        navigator.clipboard.writeText(buildCleanKpText()).then(() => { const btn = document.getElementById('btn-copy-kp'); btn.textContent = '✅ Скопировано в буфер обмена!'; setTimeout(() => { btn.textContent = '📋 Скопировать текст КП'; }, 2000); });
     }
 
     function sendToTelegram() {
-        const pct = getMarkupPct();
-        const clientName = document.getElementById('inp-name').value.trim() || 'Не указан';
-        const clientPhone = document.getElementById('inp-phone').value.trim() || 'Не указан';
-        const dealerCompany = document.getElementById('inp-dealer-company')?.value.trim() || 'Официальный дилер ПК МИШКА';
-        const payloadItems = [];
-        ITEMS.forEach(item => {
-            if (cart[item.id]) payloadItems.push({ id: item.id, name: item.name, cat: item.cat, qty: cart[item.id], base_price: item.price });
-        });
+        const payloadItems = []; ITEMS.forEach(item => { if (cart[item.id]) payloadItems.push({ id: item.id, name: item.name, cat: item.cat, qty: cart[item.id], base_price: item.price }); });
         const payload = {
             user: tg?.initDataUnsafe?.user || {},
-            client_name: clientName,
-            client_phone: clientPhone,
-            dealer_company: dealerCompany,
-            markup_pct: pct,
-            items: payloadItems
+            client_name: document.getElementById('inp-name').value.trim() || 'Не указан',
+            client_phone: document.getElementById('inp-phone').value.trim() || 'Не указан',
+            dealer_company: document.getElementById('inp-dealer-company')?.value.trim() || 'Официальный дилер ПК МИШКА',
+            markup_pct: getMarkupPct(), items: payloadItems
         };
         fetch('/api/test_order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-        .then(r => r.json())
-        .then(res => {
-            if (res.ok && tg) tg.close();
-            else alert('Заказ сформирован! Внутри Telegram-бота он сразу придет в чат.');
-        }).catch(() => alert('Не удалось связаться с сервером.'));
+        .then(r => r.json()).then(res => { if (res.ok && tg) tg.close(); else alert('Заказ сформирован! Внутри Telegram-бота он сразу придет в чат.'); })
+        .catch(() => alert('Не удалось связаться с сервером.'));
     }
 
     applyPreset('winter');
